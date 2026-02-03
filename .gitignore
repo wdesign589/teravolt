@@ -47,6 +47,7 @@ env.example
 next-env.d.ts
 
 # documentation files created during development
+README.md
 COMPLETE_PROJECT_DOCUMENTATION.md
 TERRAVOLT_BUILD_PLAN.md
 REFERENCE_TERRAVOLT2.0.pdf
