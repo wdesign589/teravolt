@@ -32,9 +32,9 @@ export default function DashboardOverviewPage() {
   const [selectedPeriod, setSelectedPeriod] = useState('1W');
   const [news, setNews] = useState<NewsItem[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
-  const [selectedSymbol, setSelectedSymbol] = useState('BINANCE:BTCUSD');
-  const [trendingCoins, setTrendingCoins] = useState<any[]>([]);
-  const [coinsLoading, setCoinsLoading] = useState(true);
+  const [selectedSymbol, setSelectedSymbol] = useState('CBOT:ZC1!');
+  const [commodityData, setCommodityData] = useState<any[]>([]);
+  const [commoditiesLoading, setCommoditiesLoading] = useState(true);
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [investmentsLoading, setInvestmentsLoading] = useState(true);
   const [totalExpectedReturns, setTotalExpectedReturns] = useState(0);
@@ -82,103 +82,36 @@ export default function DashboardOverviewPage() {
   }, []);
 
   useEffect(() => {
-    // Fetch crypto and market news (No API key required!)
-    const fetchNews = async () => {
-      try {
-        // Fetch trending coins and market data from CoinGecko (Free API, no key needed)
-        const [trendingResponse, globalResponse] = await Promise.all([
-          fetch('https://api.coingecko.com/api/v3/search/trending'),
-          fetch('https://api.coingecko.com/api/v3/global')
-        ]);
-        
-        const trendingData = await trendingResponse.json();
-        const globalData = await globalResponse.json();
-        
-        const newsItems: NewsItem[] = [];
-        
-        // Create news from trending coins
-        if (trendingData.coins && trendingData.coins.length > 0) {
-          const topCoin = trendingData.coins[0].item;
-          newsItems.push({
-            title: `${topCoin.name} (${topCoin.symbol.toUpperCase()}) Trending - Rank #${topCoin.market_cap_rank || 'N/A'}`,
-            time: 'Live',
-            category: 'Crypto',
-            source: 'CoinGecko'
-          });
-        }
-        
-        // Add market cap news
-        if (globalData.data) {
-          const marketCapChange = globalData.data.market_cap_change_percentage_24h_usd;
-          const direction = marketCapChange > 0 ? 'up' : 'down';
-          newsItems.push({
-            title: `Global Crypto Market ${direction === 'up' ? 'Rises' : 'Falls'} ${Math.abs(marketCapChange).toFixed(2)}% in 24h`,
-            time: 'Updated',
-            category: 'Markets',
-            source: 'CoinGecko'
-          });
-          
-          newsItems.push({
-            title: `Bitcoin Dominance at ${globalData.data.market_cap_percentage.btc.toFixed(1)}%`,
-            time: 'Live',
-            category: 'Crypto',
-            source: 'CoinGecko'
-          });
-        }
-        
-        // Add more trending coins
-        if (trendingData.coins && trendingData.coins.length > 1) {
-          for (let i = 1; i < Math.min(3, trendingData.coins.length); i++) {
-            const coin = trendingData.coins[i].item;
-            newsItems.push({
-              title: `${coin.name} Gaining Attention - ${coin.price_btc.toFixed(8)} BTC`,
-              time: `${i} hour${i > 1 ? 's' : ''} ago`,
-              category: 'Trending',
-              source: 'CoinGecko'
-            });
-          }
-        }
-        
-        // Limit to 5 items
-        setNews(newsItems.slice(0, 5));
-      } catch (error) {
-        console.error('Failed to fetch news:', error);
-        // Fallback crypto/stock focused data
-        setNews([
-          { title: 'Bitcoin Surges Past $45K Resistance', time: '1 hour ago', category: 'Crypto', source: 'CoinDesk' },
-          { title: 'Ethereum Network Activity Hits New High', time: '2 hours ago', category: 'Crypto', source: 'CoinTelegraph' },
-          { title: 'Tech Stocks Rally on AI Optimism', time: '3 hours ago', category: 'Stocks', source: 'Bloomberg' },
-          { title: 'DeFi TVL Crosses $100B Milestone', time: '4 hours ago', category: 'DeFi', source: 'DeFi Pulse' },
-          { title: 'S&P 500 Reaches Record High', time: '5 hours ago', category: 'Markets', source: 'Reuters' },
-        ]);
-      } finally {
-        setNewsLoading(false);
-      }
+    // Set agriculture and commodities market news
+    const loadMarketNews = () => {
+      setNews([
+        { title: 'US Farmland Values Rise 7% Amid Strong Demand', time: '1 hour ago', category: 'Farmland', source: 'AgWeek' },
+        { title: 'Corn Futures Surge on Export Demand Outlook', time: '2 hours ago', category: 'Commodities', source: 'Reuters' },
+        { title: 'Lithium Prices Stabilize as EV Demand Grows', time: '3 hours ago', category: 'Energy', source: 'Bloomberg' },
+        { title: 'Cattle Prices Hit 5-Year High on Supply Constraints', time: '4 hours ago', category: 'Livestock', source: 'AgriNews' },
+        { title: 'Global Wheat Production Forecast Revised Upward', time: '5 hours ago', category: 'Crops', source: 'FAO' },
+      ]);
+      setNewsLoading(false);
     };
 
-    fetchNews();
+    loadMarketNews();
   }, []);
 
   useEffect(() => {
-    // Fetch trending meme/crypto coins
-    const fetchTrendingCoins = async () => {
-      try {
-        const response = await fetch('https://api.coingecko.com/api/v3/search/trending');
-        const data = await response.json();
-        
-        if (data.coins) {
-          setTrendingCoins(data.coins.slice(0, 6)); // Get top 6 trending coins
-        }
-      } catch (error) {
-        console.error('Failed to fetch trending coins:', error);
-        // Fallback data
-        setTrendingCoins([]);
-      } finally {
-        setCoinsLoading(false);
-      }
+    // Set static agricultural investment data
+    const loadCommodityData = () => {
+      setCommodityData([
+        { name: 'US Farmland', symbol: 'LAND', returns: '+11.2%', type: 'Farmland', description: 'Prime agricultural land investments' },
+        { name: 'Cattle Operations', symbol: 'CATTLE', returns: '+18.5%', type: 'Livestock', description: 'Beef cattle farming operations' },
+        { name: 'Corn Production', symbol: 'CORN', returns: '+15.3%', type: 'Crops', description: 'Commercial corn farming' },
+        { name: 'Lithium Mining', symbol: 'LITH', returns: '+22.1%', type: 'Energy', description: 'Lithium extraction & processing' },
+        { name: 'Wheat Farms', symbol: 'WHEAT', returns: '+12.8%', type: 'Crops', description: 'Wheat cultivation operations' },
+        { name: 'Soybean Fields', symbol: 'SOY', returns: '+14.6%', type: 'Crops', description: 'Soybean production facilities' },
+      ]);
+      setCommoditiesLoading(false);
     };
 
-    fetchTrendingCoins();
+    loadCommodityData();
   }, []);
 
   return (
@@ -453,23 +386,29 @@ export default function DashboardOverviewPage() {
                 onChange={(e) => setSelectedSymbol(e.target.value)}
                 className="w-full md:w-auto px-4 py-2 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               >
-                <optgroup label="🪙 Cryptocurrencies">
-                  <option value="BINANCE:BTCUSD">Bitcoin (BTC/USD)</option>
-                  <option value="BINANCE:ETHUSD">Ethereum (ETH/USD)</option>
-                  <option value="BINANCE:LTCUSD">Litecoin (LTC/USD)</option>
-                  <option value="BINANCE:BNBUSD">Binance Coin (BNB/USD)</option>
-                  <option value="BINANCE:SOLUSD">Solana (SOL/USD)</option>
-                  <option value="BINANCE:ADAUSD">Cardano (ADA/USD)</option>
-                  <option value="BINANCE:DOGEUSDT">Dogecoin (DOGE/USD)</option>
-                  <option value="BINANCE:XRPUSD">Ripple (XRP/USD)</option>
+                <optgroup label="🌾 Agricultural Commodities">
+                  <option value="CBOT:ZC1!">Corn Futures</option>
+                  <option value="CBOT:ZW1!">Wheat Futures</option>
+                  <option value="CBOT:ZS1!">Soybean Futures</option>
+                  <option value="CME:LE1!">Live Cattle Futures</option>
+                  <option value="CME:GF1!">Feeder Cattle Futures</option>
+                  <option value="CME:HE1!">Lean Hogs Futures</option>
+                  <option value="NYMEX:CL1!">Crude Oil Futures</option>
+                  <option value="COMEX:GC1!">Gold Futures</option>
                 </optgroup>
-                <optgroup label="📈 Stocks">
-                  <option value="NASDAQ:AAPL">Apple (AAPL)</option>
-                  <option value="NASDAQ:TSLA">Tesla (TSLA)</option>
-                  <option value="NASDAQ:MSFT">Microsoft (MSFT)</option>
-                  <option value="NASDAQ:GOOGL">Google (GOOGL)</option>
-                  <option value="NASDAQ:AMZN">Amazon (AMZN)</option>
-                  <option value="NASDAQ:META">Meta (META)</option>
+                <optgroup label="🔋 Energy & Lithium">
+                  <option value="NYSE:ALB">Albemarle Corp (Lithium)</option>
+                  <option value="NYSE:SQM">Sociedad Química (Lithium)</option>
+                  <option value="NYSE:LAC">Lithium Americas</option>
+                  <option value="NASDAQ:LTHM">Livent Corporation</option>
+                </optgroup>
+                <optgroup label="🌱 Agricultural Stocks">
+                  <option value="NYSE:DE">Deere & Company (Farm Equipment)</option>
+                  <option value="NYSE:ADM">Archer-Daniels-Midland (Agribusiness)</option>
+                  <option value="NYSE:BG">Bunge Limited (Agribusiness)</option>
+                  <option value="NYSE:CTVA">Corteva Agriscience (Seeds)</option>
+                  <option value="NYSE:NTR">Nutrien Ltd (Fertilizers)</option>
+                  <option value="NYSE:MOS">Mosaic Company (Fertilizers)</option>
                 </optgroup>
               </select>
             </div>
@@ -526,29 +465,27 @@ export default function DashboardOverviewPage() {
         </div>
       </div>
 
-      {/* Top Stacking Assets */}
+      {/* Top Performing Assets */}
       <div className="mt-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-slate-900">Top Stacking Assets</h2>
-          <button className="text-sm text-emerald-600 hover:text-emerald-700 font-semibold">
+          <h2 className="text-xl font-bold text-slate-900">Top Performing Assets</h2>
+          <Link href="/dashboard/invest" className="text-sm text-emerald-600 hover:text-emerald-700 font-semibold">
             See all →
-          </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {[
-            { name: 'Apple Inc.', date: 'Oct 24 - Nov 03', price: '$123,411', change: '+2%', positive: true, amount: '$11,348' },
-            { name: 'Apple Inc.', date: 'Oct 24 - Nov 03', price: '$123,411', change: '-8.5%', negative: true, amount: '$11,348' },
-            { name: 'Apple Inc.', date: 'Oct 24 - Nov 03', price: '$123,411', change: '+5.9%', positive: true, amount: '$11,348' },
-            { name: 'Apple Inc.', date: 'Oct 24 - Nov 03', price: '$123,411', change: '-3%', negative: true, amount: '$11,348' },
+            { name: 'Iowa Farmland', date: 'Q1 2024 - Q4 2024', price: '$125,000', change: '+12.4%', positive: true, amount: '$15,500', icon: '🌾' },
+            { name: 'Texas Cattle Ranch', date: 'Jan 24 - Dec 24', price: '$89,500', change: '+18.2%', positive: true, amount: '$16,290', icon: '🐄' },
+            { name: 'Lithium Processing', date: 'Mar 24 - Mar 25', price: '$250,000', change: '+24.5%', positive: true, amount: '$61,250', icon: '🔋' },
+            { name: 'Nebraska Corn Farm', date: 'Apr 24 - Oct 24', price: '$67,800', change: '+15.8%', positive: true, amount: '$10,712', icon: '🌽' },
           ].map((asset, i) => (
             <div key={i} className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm hover:shadow-lg transition-all group">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center">
-                    <svg className="w-5 h-5 text-slate-700" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01-.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
-                    </svg>
+                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-50 to-teal-100 rounded-xl flex items-center justify-center text-xl">
+                    {asset.icon}
                   </div>
                   <div>
                     <div className="font-semibold text-slate-900 text-sm">{asset.name}</div>
@@ -583,22 +520,22 @@ export default function DashboardOverviewPage() {
         </div>
       </div>
 
-      {/* Trending Meme Coins Section */}
-      <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 rounded-3xl p-6 border border-purple-200 shadow-lg">
+      {/* Agricultural Investment Opportunities Section */}
+      <div className="bg-gradient-to-br from-emerald-50 via-teal-50 to-green-50 rounded-3xl p-6 border border-emerald-200 shadow-lg">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent">
-              🔥 Trending Meme Coins
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent">
+              🌾 Investment Opportunities
             </h2>
-            <p className="text-sm text-slate-600 mt-1">Top performing coins right now</p>
+            <p className="text-sm text-slate-600 mt-1">Top performing agricultural & energy assets</p>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-xs font-semibold text-slate-600">Live</span>
+            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+            <span className="text-xs font-semibold text-slate-600">Updated</span>
           </div>
         </div>
 
-        {coinsLoading ? (
+        {commoditiesLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="animate-pulse bg-white/50 rounded-2xl p-4 h-32"></div>
@@ -606,60 +543,56 @@ export default function DashboardOverviewPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {trendingCoins.map((coin, i) => {
-              const coinData = coin.item;
-              const priceChange = coinData.data?.price_change_percentage_24h?.usd || 0;
-              const isPositive = priceChange > 0;
+            {commodityData.map((asset, i) => {
+              const typeIcons: Record<string, string> = {
+                'Farmland': '🏞️',
+                'Livestock': '🐄',
+                'Crops': '🌽',
+                'Energy': '🔋',
+              };
+              const typeColors: Record<string, string> = {
+                'Farmland': 'bg-amber-100 text-amber-700',
+                'Livestock': 'bg-orange-100 text-orange-700',
+                'Crops': 'bg-green-100 text-green-700',
+                'Energy': 'bg-blue-100 text-blue-700',
+              };
               
               return (
-                <div key={i} className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-white/50 hover:shadow-xl transition-all transform hover:-translate-y-1 group">
+                <div key={i} className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-white/50 hover:shadow-xl transition-all transform hover:-translate-y-1 group relative">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
-                      {coinData.thumb && (
-                        <img src={coinData.thumb} alt={coinData.name} className="w-10 h-10 rounded-full ring-2 ring-purple-200" />
-                      )}
+                      <div className="w-10 h-10 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full flex items-center justify-center text-xl">
+                        {typeIcons[asset.type] || '📊'}
+                      </div>
                       <div>
-                        <div className="font-bold text-slate-900">{coinData.name}</div>
-                        <div className="text-xs text-slate-500 uppercase">{coinData.symbol}</div>
+                        <div className="font-bold text-slate-900">{asset.name}</div>
+                        <div className="text-xs text-slate-500 uppercase">{asset.symbol}</div>
                       </div>
                     </div>
-                    <div className="text-xs font-semibold text-slate-400">#{coinData.market_cap_rank || 'N/A'}</div>
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-slate-500">Price BTC</span>
-                      <span className="text-xs font-mono font-semibold text-slate-900">
-                        {coinData.price_btc?.toFixed(8) || 'N/A'}
-                      </span>
-                    </div>
+                    <p className="text-xs text-slate-600">{asset.description}</p>
                     
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-slate-500">24h Change</span>
-                      <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${
-                        isPositive ? 'bg-emerald-100' : 'bg-red-100'
-                      }`}>
-                        <span className={`text-xs font-bold ${
-                          isPositive ? 'text-emerald-600' : 'text-red-600'
-                        }`}>
-                          {isPositive ? '↑' : '↓'} {Math.abs(priceChange).toFixed(2)}%
+                      <span className="text-xs text-slate-500">Annual Returns</span>
+                      <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-100">
+                        <span className="text-xs font-bold text-emerald-600">
+                          ↑ {asset.returns}
                         </span>
                       </div>
                     </div>
 
                     <div className="pt-2 border-t border-slate-100">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-slate-400">Rank</span>
-                        <span className="font-semibold text-purple-600">
-                          🏆 #{i + 1} Trending
+                        <span className={`px-2 py-0.5 rounded-full font-semibold ${typeColors[asset.type] || 'bg-slate-100 text-slate-600'}`}>
+                          {asset.type}
+                        </span>
+                        <span className="font-semibold text-emerald-600">
+                          View Details →
                         </span>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Sparkle effect on hover */}
-                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="text-yellow-400">✨</span>
                   </div>
                 </div>
               );
@@ -668,17 +601,15 @@ export default function DashboardOverviewPage() {
         )}
 
         <div className="mt-6 text-center">
-          <a 
-            href="https://www.coingecko.com" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl"
+          <Link 
+            href="/dashboard/invest"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-xl hover:from-emerald-700 hover:to-teal-700 transition-all shadow-lg hover:shadow-xl"
           >
-            View More on CoinGecko
+            Explore All Investments
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
 
