@@ -9,24 +9,23 @@ const authRoutes = ['/sign-in', '/sign-up'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const sessionToken = request.cookies.get('session')?.value;
+  const authToken = request.cookies.get('auth-token')?.value;
 
   // Check if the current route is protected
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
   const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
 
-  // TEMPORARILY DISABLED FOR FRONTEND DEVELOPMENT
-  // Redirect to sign-in if accessing protected route without session
-  // if (isProtectedRoute && !sessionToken) {
-  //   const signInUrl = new URL('/sign-in', request.url);
-  //   signInUrl.searchParams.set('redirect', pathname);
-  //   return NextResponse.redirect(signInUrl);
-  // }
+  // Redirect to sign-in if accessing protected route without auth token
+  if (isProtectedRoute && !authToken) {
+    const signInUrl = new URL('/sign-in', request.url);
+    signInUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(signInUrl);
+  }
 
   // Redirect to dashboard if accessing auth routes with active session
-  // if (isAuthRoute && sessionToken) {
-  //   return NextResponse.redirect(new URL('/dashboard', request.url));
-  // }
+  if (isAuthRoute && authToken) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
 
   return NextResponse.next();
 }
