@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useDashboardStore } from '@/stores/useDashboardStore';
 
 interface DashboardProviderProps {
@@ -21,35 +21,41 @@ interface DashboardProviderProps {
  * - User performs a mutation (deposit, invest, etc.)
  * - User explicitly refreshes
  * - User logs out and back in
+ * 
+ * IMPORTANT: This provider NEVER blocks rendering after initial load.
+ * Navigation between dashboard pages should be instant.
  */
 export default function DashboardProvider({ children }: DashboardProviderProps) {
   const router = useRouter();
-  const pathname = usePathname();
   
-  // Get store state and actions - use getState() for initialization check to avoid re-renders
-  const isAuthenticated = useDashboardStore((state) => state.isAuthenticated);
+  // Local state to track if we've attempted initialization
+  // This persists across route changes within the dashboard
+  const [hasAttemptedInit, setHasAttemptedInit] = useState(false);
+  
+  // Get store state - these are reactive and will update the component
   const isInitialized = useDashboardStore((state) => state.isInitialized);
   const isInitializing = useDashboardStore((state) => state.isInitializing);
   const user = useDashboardStore((state) => state.user);
   const errors = useDashboardStore((state) => state.errors);
-  const initializeDashboard = useDashboardStore((state) => state.initializeDashboard);
 
   /**
    * Initialize dashboard data on mount
    * This runs ONCE when entering the dashboard
-   * The store's isInitialized flag prevents re-fetching on route changes
-   * 
-   * IMPORTANT: Empty dependency array ensures this only runs once per mount
-   * We use getState() inside to get fresh values without triggering re-runs
    */
   useEffect(() => {
+    // Only run initialization once
+    if (hasAttemptedInit) {
+      return;
+    }
+    
     const init = async () => {
-      // Check store state directly to avoid stale closure issues
+      // Check store state directly
       const currentState = useDashboardStore.getState();
       
       // Skip if already initialized with user data
       if (currentState.isInitialized && currentState.user) {
         console.log('✅ [DashboardProvider] Already initialized, skipping fetch');
+        setHasAttemptedInit(true);
         return;
       }
       
@@ -60,47 +66,67 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
       }
       
       console.log('🎯 [DashboardProvider] Starting initialization...');
+      setHasAttemptedInit(true);
+      
       await useDashboardStore.getState().initializeDashboard();
       
       // Check if initialization failed due to auth
       const state = useDashboardStore.getState();
       if (!state.isAuthenticated && state.errors.user === 'Not authenticated') {
         console.log('🔒 [DashboardProvider] Not authenticated, redirecting to login...');
-        // Get current pathname fresh for redirect
         const currentPath = window.location.pathname;
         router.push(`/sign-in?redirect=${encodeURIComponent(currentPath)}`);
       }
     };
     
     init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty array - run only once on mount
+  }, [hasAttemptedInit, router]);
 
   /**
-   * Handle authentication errors
-   * Redirect to login if user becomes unauthenticated
+   * Handle authentication errors - redirect to login
    */
   useEffect(() => {
-    if (errors.user === 'Not authenticated' && !isInitializing) {
+    if (errors.user === 'Not authenticated' && !isInitializing && hasAttemptedInit) {
       console.log('🔒 [DashboardProvider] Auth error detected, redirecting...');
-      router.push(`/sign-in?redirect=${encodeURIComponent(pathname)}`);
+      const currentPath = window.location.pathname;
+      router.push(`/sign-in?redirect=${encodeURIComponent(currentPath)}`);
     }
-  }, [errors.user, isInitializing, router, pathname]);
+  }, [errors.user, isInitializing, hasAttemptedInit, router]);
 
   /**
    * Show loading state ONLY on first initialization
-   * Once initialized, never show loading screen again (data persists in store)
+   * Once initialized, ALWAYS render children immediately
+   * This ensures navigation between pages is instant
    */
-  if (!isInitialized && (isInitializing || !errors.user)) {
+  if (!isInitialized && !hasAttemptedInit) {
+    // Very first render before init starts
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <div className="relative w-20 h-20 mx-auto mb-6">
-            {/* Outer ring */}
             <div className="absolute inset-0 rounded-full border-4 border-emerald-100"></div>
-            {/* Spinning ring */}
             <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-600 animate-spin"></div>
-            {/* Inner icon */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+          </div>
+          <h2 className="text-xl font-bold text-slate-900 mb-2">Loading Dashboard</h2>
+          <p className="text-slate-600 text-sm">Preparing your investment data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isInitializing && !isInitialized) {
+    // Currently initializing for the first time
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative w-20 h-20 mx-auto mb-6">
+            <div className="absolute inset-0 rounded-full border-4 border-emerald-100"></div>
+            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-600 animate-spin"></div>
             <div className="absolute inset-0 flex items-center justify-center">
               <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -117,7 +143,7 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
   /**
    * Show error state if initialization failed (non-auth error)
    */
-  if (errors.user && errors.user !== 'Not authenticated') {
+  if (errors.user && errors.user !== 'Not authenticated' && !isInitialized) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
@@ -133,7 +159,7 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
               onClick={() => {
                 useDashboardStore.getState().clearErrors();
                 useDashboardStore.getState().resetStore();
-                initializeDashboard();
+                setHasAttemptedInit(false);
               }}
               className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors"
             >
@@ -152,7 +178,8 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
   }
 
   /**
-   * Render children when initialized
+   * ALWAYS render children once we've attempted initialization
+   * This ensures navigation is never blocked
    */
   return <>{children}</>;
 }
