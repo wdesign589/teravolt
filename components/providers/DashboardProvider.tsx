@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDashboardStore } from '@/stores/useDashboardStore';
 
@@ -19,24 +19,62 @@ let globalInitStarted = false;
  * 
  * Key architectural decisions:
  * 1. Use module-level flag (not useState) to track init - survives remounts
- * 2. Check for persisted `user` to determine if we should show loading
- * 3. Never block rendering if user data exists (from localStorage)
- * 4. Background refresh data without blocking UI
+ * 2. Wait for Zustand hydration before showing loading screen
+ * 3. Check for persisted `user` to determine if we should show loading
+ * 4. Never block rendering if user data exists (from localStorage)
+ * 5. Background refresh data without blocking UI
  */
 export default function DashboardProvider({ children }: DashboardProviderProps) {
   const router = useRouter();
   const initRef = useRef(false);
   
-  // Get persisted user directly - this is restored from localStorage
+  // Track if Zustand has hydrated from localStorage
+  const [isHydrated, setIsHydrated] = useState(false);
+  
+  // Get persisted user directly - this is restored from localStorage after hydration
   const user = useDashboardStore((state) => state.user);
-  const isAuthenticated = useDashboardStore((state) => state.isAuthenticated);
   const errors = useDashboardStore((state) => state.errors);
+
+  /**
+   * Wait for Zustand hydration to complete
+   * This prevents flash of loading screen before localStorage is read
+   */
+  useEffect(() => {
+    // Check if already hydrated (user exists)
+    const state = useDashboardStore.getState();
+    if (state.user) {
+      setIsHydrated(true);
+      return;
+    }
+    
+    // Subscribe to store changes to detect hydration
+    const unsubscribe = useDashboardStore.subscribe((state) => {
+      if (state.user) {
+        setIsHydrated(true);
+      }
+    });
+    
+    // Also set hydrated after a short delay to handle case where there's no persisted data
+    const timeout = setTimeout(() => {
+      setIsHydrated(true);
+    }, 100);
+    
+    return () => {
+      unsubscribe();
+      clearTimeout(timeout);
+    };
+  }, []);
 
   /**
    * Initialize dashboard data
    * Runs once per session, not per navigation
    */
   useEffect(() => {
+    // Wait for hydration before initializing
+    if (!isHydrated) {
+      return;
+    }
+    
     // Use both ref and global flag to prevent double initialization
     if (initRef.current || globalInitStarted) {
       return;
@@ -87,7 +125,7 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
     };
     
     init();
-  }, [router]);
+  }, [isHydrated, router]);
 
   /**
    * Handle auth errors - redirect to login
@@ -100,10 +138,19 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
   }, [errors.user, router]);
 
   /**
-   * CRITICAL: Only show loading if NO user data exists
-   * If user exists from localStorage (persisted), render immediately
-   * This is what enables instant navigation
+   * Show loading only if:
+   * 1. Hydration is complete (we've read localStorage)
+   * 2. AND there's no user (not logged in or first visit)
+   * 3. AND there's no error
+   * 
+   * This prevents flash of loading screen during hydration
    */
+  if (!isHydrated) {
+    // Still hydrating - render nothing to prevent flash
+    // This is a very brief moment (< 100ms)
+    return null;
+  }
+
   if (!user && !errors.user) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
