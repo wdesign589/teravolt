@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useDashboardStore } from '@/stores/useDashboardStore';
 
@@ -25,9 +25,8 @@ interface DashboardProviderProps {
 export default function DashboardProvider({ children }: DashboardProviderProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const initAttempted = useRef(false);
   
-  // Get store state and actions
+  // Get store state and actions - use getState() for initialization check to avoid re-renders
   const isAuthenticated = useDashboardStore((state) => state.isAuthenticated);
   const isInitialized = useDashboardStore((state) => state.isInitialized);
   const isInitializing = useDashboardStore((state) => state.isInitializing);
@@ -37,30 +36,45 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
 
   /**
    * Initialize dashboard data on mount
-   * This runs once when entering the dashboard
+   * This runs ONCE when entering the dashboard
+   * The store's isInitialized flag prevents re-fetching on route changes
+   * 
+   * IMPORTANT: Empty dependency array ensures this only runs once per mount
+   * We use getState() inside to get fresh values without triggering re-runs
    */
   useEffect(() => {
-    // Prevent multiple initialization attempts
-    if (initAttempted.current) {
-      return;
-    }
-    
     const init = async () => {
-      initAttempted.current = true;
-      console.log('🎯 [DashboardProvider] Starting initialization...');
+      // Check store state directly to avoid stale closure issues
+      const currentState = useDashboardStore.getState();
       
-      await initializeDashboard();
+      // Skip if already initialized with user data
+      if (currentState.isInitialized && currentState.user) {
+        console.log('✅ [DashboardProvider] Already initialized, skipping fetch');
+        return;
+      }
+      
+      // Skip if currently initializing
+      if (currentState.isInitializing) {
+        console.log('⏳ [DashboardProvider] Already initializing, skipping');
+        return;
+      }
+      
+      console.log('🎯 [DashboardProvider] Starting initialization...');
+      await useDashboardStore.getState().initializeDashboard();
       
       // Check if initialization failed due to auth
       const state = useDashboardStore.getState();
       if (!state.isAuthenticated && state.errors.user === 'Not authenticated') {
         console.log('🔒 [DashboardProvider] Not authenticated, redirecting to login...');
-        router.push(`/sign-in?redirect=${encodeURIComponent(pathname)}`);
+        // Get current pathname fresh for redirect
+        const currentPath = window.location.pathname;
+        router.push(`/sign-in?redirect=${encodeURIComponent(currentPath)}`);
       }
     };
     
     init();
-  }, []); // Empty dependency array - run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty array - run only once on mount
 
   /**
    * Handle authentication errors
@@ -74,9 +88,10 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
   }, [errors.user, isInitializing, router, pathname]);
 
   /**
-   * Show loading state while initializing
+   * Show loading state ONLY on first initialization
+   * Once initialized, never show loading screen again (data persists in store)
    */
-  if (isInitializing || (!isInitialized && !errors.user)) {
+  if (!isInitialized && (isInitializing || !errors.user)) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
@@ -116,8 +131,8 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
           <div className="flex gap-3 justify-center">
             <button
               onClick={() => {
-                initAttempted.current = false;
                 useDashboardStore.getState().clearErrors();
+                useDashboardStore.getState().resetStore();
                 initializeDashboard();
               }}
               className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors"
