@@ -226,8 +226,9 @@ export default function DashboardLayout({
 
   const isActive = (href: string) => pathname === href;
 
-  const layoutContent = (
-    <div className="min-h-screen bg-slate-50">
+  return (
+    <DashboardProvider>
+      <div className="min-h-screen bg-slate-50">
       {/* Modern Sidebar */}
       <aside className="fixed left-0 top-0 h-full w-72 bg-white border-r border-slate-200 shadow-sm z-50 flex flex-col">
         {/* Logo Section */}
@@ -568,8 +569,6 @@ export default function DashboardLayout({
         </main>
       </div>
     </div>
+    </DashboardProvider>
   );
-
-  // Wrap the entire layout with DashboardProvider
-  return <DashboardProvider>{layoutContent}</DashboardProvider>;
 }
