@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDashboardStore } from '@/stores/useDashboardStore';
 
@@ -9,118 +9,102 @@ interface DashboardProviderProps {
 }
 
 /**
+ * Module-level flag to track initialization across component remounts
+ * This persists even when the component remounts during navigation
+ */
+let globalInitStarted = false;
+
+/**
  * DashboardProvider
  * 
- * This provider wraps the entire dashboard layout and handles:
- * 1. Initial data loading when entering the dashboard
- * 2. Authentication verification
- * 3. Redirect to login if not authenticated
- * 4. Loading state management
- * 
- * Data is fetched ONCE when the provider mounts, and only refetched when:
- * - User performs a mutation (deposit, invest, etc.)
- * - User explicitly refreshes
- * - User logs out and back in
- * 
- * IMPORTANT: This provider NEVER blocks rendering after initial load.
- * Navigation between dashboard pages should be instant.
+ * Key architectural decisions:
+ * 1. Use module-level flag (not useState) to track init - survives remounts
+ * 2. Check for persisted `user` to determine if we should show loading
+ * 3. Never block rendering if user data exists (from localStorage)
+ * 4. Background refresh data without blocking UI
  */
 export default function DashboardProvider({ children }: DashboardProviderProps) {
   const router = useRouter();
+  const initRef = useRef(false);
   
-  // Local state to track if we've attempted initialization
-  // This persists across route changes within the dashboard
-  const [hasAttemptedInit, setHasAttemptedInit] = useState(false);
-  
-  // Get store state - these are reactive and will update the component
-  const isInitialized = useDashboardStore((state) => state.isInitialized);
-  const isInitializing = useDashboardStore((state) => state.isInitializing);
+  // Get persisted user directly - this is restored from localStorage
   const user = useDashboardStore((state) => state.user);
+  const isAuthenticated = useDashboardStore((state) => state.isAuthenticated);
   const errors = useDashboardStore((state) => state.errors);
 
   /**
-   * Initialize dashboard data on mount
-   * This runs ONCE when entering the dashboard
+   * Initialize dashboard data
+   * Runs once per session, not per navigation
    */
   useEffect(() => {
-    // Only run initialization once
-    if (hasAttemptedInit) {
+    // Use both ref and global flag to prevent double initialization
+    if (initRef.current || globalInitStarted) {
       return;
     }
     
     const init = async () => {
-      // Check store state directly
-      const currentState = useDashboardStore.getState();
+      const state = useDashboardStore.getState();
       
-      // Skip if already initialized with user data
-      if (currentState.isInitialized && currentState.user) {
-        console.log('✅ [DashboardProvider] Already initialized, skipping fetch');
-        setHasAttemptedInit(true);
+      // If user exists from persistence, just refresh data in background
+      // Don't block the UI - user can see dashboard immediately
+      if (state.user) {
+        console.log('✅ [DashboardProvider] User exists from persistence, refreshing data in background...');
+        initRef.current = true;
+        globalInitStarted = true;
+        
+        // Mark as initialized immediately so UI renders
+        useDashboardStore.setState({ isInitialized: true });
+        
+        // Refresh data in background (non-blocking)
+        Promise.all([
+          state.fetchUserInvestments(),
+          state.fetchInvestmentPlans(),
+          state.fetchTransactions(),
+          state.fetchAdminWallets(),
+        ]).then(() => {
+          console.log('✅ [DashboardProvider] Background data refresh complete');
+        }).catch((err) => {
+          console.error('⚠️ [DashboardProvider] Background refresh error:', err);
+        });
+        
         return;
       }
       
-      // Skip if currently initializing
-      if (currentState.isInitializing) {
-        console.log('⏳ [DashboardProvider] Already initializing, skipping');
-        return;
-      }
-      
-      console.log('🎯 [DashboardProvider] Starting initialization...');
-      setHasAttemptedInit(true);
+      // No user in persistence - need to fetch everything
+      console.log('🎯 [DashboardProvider] No cached user, initializing from scratch...');
+      initRef.current = true;
+      globalInitStarted = true;
       
       await useDashboardStore.getState().initializeDashboard();
       
-      // Check if initialization failed due to auth
-      const state = useDashboardStore.getState();
-      if (!state.isAuthenticated && state.errors.user === 'Not authenticated') {
-        console.log('🔒 [DashboardProvider] Not authenticated, redirecting to login...');
+      // Check if auth failed
+      const newState = useDashboardStore.getState();
+      if (!newState.isAuthenticated || newState.errors.user === 'Not authenticated') {
+        console.log('🔒 [DashboardProvider] Not authenticated, redirecting...');
         const currentPath = window.location.pathname;
         router.push(`/sign-in?redirect=${encodeURIComponent(currentPath)}`);
       }
     };
     
     init();
-  }, [hasAttemptedInit, router]);
+  }, [router]);
 
   /**
-   * Handle authentication errors - redirect to login
+   * Handle auth errors - redirect to login
    */
   useEffect(() => {
-    if (errors.user === 'Not authenticated' && !isInitializing && hasAttemptedInit) {
-      console.log('🔒 [DashboardProvider] Auth error detected, redirecting...');
+    if (errors.user === 'Not authenticated') {
       const currentPath = window.location.pathname;
       router.push(`/sign-in?redirect=${encodeURIComponent(currentPath)}`);
     }
-  }, [errors.user, isInitializing, hasAttemptedInit, router]);
+  }, [errors.user, router]);
 
   /**
-   * Show loading state ONLY on first initialization
-   * Once initialized, ALWAYS render children immediately
-   * This ensures navigation between pages is instant
+   * CRITICAL: Only show loading if NO user data exists
+   * If user exists from localStorage (persisted), render immediately
+   * This is what enables instant navigation
    */
-  if (!isInitialized && !hasAttemptedInit) {
-    // Very first render before init starts
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative w-20 h-20 mx-auto mb-6">
-            <div className="absolute inset-0 rounded-full border-4 border-emerald-100"></div>
-            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-600 animate-spin"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-          </div>
-          <h2 className="text-xl font-bold text-slate-900 mb-2">Loading Dashboard</h2>
-          <p className="text-slate-600 text-sm">Preparing your investment data...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (isInitializing && !isInitialized) {
-    // Currently initializing for the first time
+  if (!user && !errors.user) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
@@ -141,9 +125,9 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
   }
 
   /**
-   * Show error state if initialization failed (non-auth error)
+   * Show error state for non-auth errors
    */
-  if (errors.user && errors.user !== 'Not authenticated' && !isInitialized) {
+  if (errors.user && errors.user !== 'Not authenticated') {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
@@ -157,9 +141,10 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
           <div className="flex gap-3 justify-center">
             <button
               onClick={() => {
+                globalInitStarted = false;
+                initRef.current = false;
                 useDashboardStore.getState().clearErrors();
-                useDashboardStore.getState().resetStore();
-                setHasAttemptedInit(false);
+                useDashboardStore.getState().initializeDashboard();
               }}
               className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors"
             >
@@ -177,10 +162,7 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
     );
   }
 
-  /**
-   * ALWAYS render children once we've attempted initialization
-   * This ensures navigation is never blocked
-   */
+  // User exists - render dashboard immediately
   return <>{children}</>;
 }
 
