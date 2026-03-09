@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import { useDashboardStore } from '@/stores/useDashboardStore';
 
 interface DashboardProviderProps {
@@ -24,12 +23,12 @@ let globalInitStarted = false;
  * This ensures instant navigation between dashboard pages.
  */
 export default function DashboardProvider({ children }: DashboardProviderProps) {
-  const router = useRouter();
   const initRef = useRef(false);
 
   /**
    * Initialize dashboard data in background
    * NEVER blocks rendering - children always render immediately
+   * Empty dependency array - runs only once on mount
    */
   useEffect(() => {
     // Prevent double initialization
@@ -65,26 +64,16 @@ export default function DashboardProvider({ children }: DashboardProviderProps) 
       console.log('🎯 [DashboardProvider] Initializing dashboard...');
       await useDashboardStore.getState().initializeDashboard();
       
-      // Check if auth failed - redirect to login
+      // Check if auth failed - redirect to login using window.location (no React re-renders)
       const newState = useDashboardStore.getState();
       if (!newState.isAuthenticated || newState.errors.user === 'Not authenticated') {
         console.log('🔒 [DashboardProvider] Not authenticated, redirecting...');
-        router.push(`/sign-in?redirect=${encodeURIComponent(window.location.pathname)}`);
+        window.location.href = `/sign-in?redirect=${encodeURIComponent(window.location.pathname)}`;
       }
     };
     
     init();
-  }, [router]);
-
-  /**
-   * Handle auth errors - redirect to login
-   */
-  useEffect(() => {
-    const errors = useDashboardStore.getState().errors;
-    if (errors.user === 'Not authenticated') {
-      router.push(`/sign-in?redirect=${encodeURIComponent(window.location.pathname)}`);
-    }
-  }, [router]);
+  }, []); // Empty dependency array - no re-runs
 
   // ALWAYS render children immediately - never block
   return <>{children}</>;
