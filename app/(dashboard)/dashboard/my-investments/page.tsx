@@ -1,52 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore';
-
-interface UserInvestment {
-  _id: string;
-  investmentPlanName: string;
-  amount: number;
-  expectedReturn: number;
-  dailyProfit: number;
-  totalProfit: number;
-  status: 'active' | 'completed' | 'cancelled';
-  startDate: string;
-  endDate: string;
-  completedAt?: string;
-  durationDays: number;
-  percentageReturn?: number;
-  profitDistributions: Array<{
-    amount: number;
-    date: string;
-    balanceAfter: number;
-  }>;
-}
+import { useState, useMemo } from 'react';
+import { useUser, useUserInvestments, useIsLoading, UserInvestment } from '@/stores/useDashboardStore';
 
 export default function MyInvestmentsPage() {
-  const user = useAuthStore((state) => state.user);
-  const [investments, setInvestments] = useState<UserInvestment[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Access data from centralized store - NO useEffect fetching needed!
+  const user = useUser();
+  const allInvestments = useUserInvestments();
+  const isLoading = useIsLoading();
+  
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
-  useEffect(() => {
-    fetchInvestments();
-  }, []);
+  // Loading state from centralized store
+  const loading = isLoading.investments;
 
-  const fetchInvestments = async () => {
-    try {
-      const response = await fetch('/api/user/investments');
-      const data = await response.json();
-      
-      if (response.ok) {
-        setInvestments(data.investments || []);
-      }
-    } catch (error) {
-      console.error('Error fetching investments:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Filter investments based on selected filter
+  const investments = useMemo(() => {
+    if (filter === 'all') return allInvestments;
+    return allInvestments.filter(inv => inv.status === filter);
+  }, [allInvestments, filter]);
 
   // Calculate statistics
   const stats = {
@@ -280,7 +252,7 @@ export default function MyInvestmentsPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-slate-200">
                   <div>
                     <div className="text-xs text-slate-500 mb-1">Daily Profit</div>
-                    <div className="text-lg font-bold text-slate-900">${investment.dailyProfit.toFixed(2)}</div>
+                    <div className="text-lg font-bold text-slate-900">${(investment.dailyProfit || 0).toFixed(2)}</div>
                   </div>
                   <div>
                     <div className="text-xs text-slate-500 mb-1">Profit Earned</div>

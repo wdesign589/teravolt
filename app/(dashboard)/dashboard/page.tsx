@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import EmailVerificationBanner from '@/components/EmailVerificationBanner';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useDashboardStore, useUser, useUserInvestments, useIsLoading } from '@/stores/useDashboardStore';
 
 interface NewsItem {
   title: string;
@@ -12,32 +12,15 @@ interface NewsItem {
   source: string;
 }
 
-interface Investment {
-  _id: string;
-  investmentPlanName: string;
-  amount: number;
-  expectedReturn: number;
-  percentageReturn?: number;
-  totalProfit: number;
-  status: string;
-  startDate: string;
-  endDate: string;
-}
-
 export default function DashboardOverviewPage() {
-  // Access user data from Zustand
-  const user = useAuthStore((state) => state.user);
-  const fetchUser = useAuthStore((state) => state.fetchUser);
+  // Access data from centralized dashboard store - NO useEffect fetching needed!
+  // Data is already loaded by DashboardProvider at layout level
+  const user = useUser();
+  const userInvestments = useUserInvestments();
+  const isLoading = useIsLoading();
   
   const [selectedPeriod, setSelectedPeriod] = useState('1W');
-  const [news, setNews] = useState<NewsItem[]>([]);
-  const [newsLoading, setNewsLoading] = useState(true);
   const [selectedSymbol, setSelectedSymbol] = useState('CBOT:ZC1!');
-  const [commodityData, setCommodityData] = useState<any[]>([]);
-  const [commoditiesLoading, setCommoditiesLoading] = useState(true);
-  const [investments, setInvestments] = useState<Investment[]>([]);
-  const [investmentsLoading, setInvestmentsLoading] = useState(true);
-  const [totalExpectedReturns, setTotalExpectedReturns] = useState(0);
   
   // Extract user statistics with fallbacks to 0
   const balance = user?.balance ?? 0;
@@ -46,73 +29,38 @@ export default function DashboardOverviewPage() {
   const totalInvestments = user?.totalInvestments ?? 0;
   const totalProfit = user?.totalProfit ?? 0;
 
-  // Refresh user data on mount to ensure email verification status is current
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
-
-  // Fetch user investments
-  useEffect(() => {
-    const fetchInvestments = async () => {
-      try {
-        setInvestmentsLoading(true);
-        const response = await fetch('/api/user/investments');
-        if (response.ok) {
-          const data = await response.json();
-          const allInvestments = data.investments || [];
-          
-          // Calculate total expected returns from all active investments
-          const totalExpected = allInvestments
-            .filter((inv: Investment) => inv.status === 'active')
-            .reduce((sum: number, inv: Investment) => sum + (inv.expectedReturn || 0), 0);
-          
-          setTotalExpectedReturns(totalExpected);
-          
-          // Get only the top 3 most recent investments for display
-          setInvestments(allInvestments.slice(0, 3));
-        }
-      } catch (error) {
-        console.error('Failed to fetch investments:', error);
-      } finally {
-        setInvestmentsLoading(false);
-      }
+  // Calculate investment stats from centralized store data
+  const { investments, totalExpectedReturns } = useMemo(() => {
+    const activeInvestments = userInvestments.filter(inv => inv.status === 'active');
+    const totalExpected = activeInvestments.reduce((sum, inv) => sum + (inv.expectedReturn || 0), 0);
+    return {
+      investments: userInvestments.slice(0, 3), // Top 3 for display
+      totalExpectedReturns: totalExpected,
     };
+  }, [userInvestments]);
 
-    fetchInvestments();
-  }, []);
+  // Static data - no need for useEffect
+  const news: NewsItem[] = [
+    { title: 'US Farmland Values Rise 7% Amid Strong Demand', time: '1 hour ago', category: 'Farmland', source: 'AgWeek' },
+    { title: 'Corn Futures Surge on Export Demand Outlook', time: '2 hours ago', category: 'Commodities', source: 'Reuters' },
+    { title: 'Lithium Prices Stabilize as EV Demand Grows', time: '3 hours ago', category: 'Energy', source: 'Bloomberg' },
+    { title: 'Cattle Prices Hit 5-Year High on Supply Constraints', time: '4 hours ago', category: 'Livestock', source: 'AgriNews' },
+    { title: 'Global Wheat Production Forecast Revised Upward', time: '5 hours ago', category: 'Crops', source: 'FAO' },
+  ];
 
-  useEffect(() => {
-    // Set agriculture and commodities market news
-    const loadMarketNews = () => {
-      setNews([
-        { title: 'US Farmland Values Rise 7% Amid Strong Demand', time: '1 hour ago', category: 'Farmland', source: 'AgWeek' },
-        { title: 'Corn Futures Surge on Export Demand Outlook', time: '2 hours ago', category: 'Commodities', source: 'Reuters' },
-        { title: 'Lithium Prices Stabilize as EV Demand Grows', time: '3 hours ago', category: 'Energy', source: 'Bloomberg' },
-        { title: 'Cattle Prices Hit 5-Year High on Supply Constraints', time: '4 hours ago', category: 'Livestock', source: 'AgriNews' },
-        { title: 'Global Wheat Production Forecast Revised Upward', time: '5 hours ago', category: 'Crops', source: 'FAO' },
-      ]);
-      setNewsLoading(false);
-    };
+  const commodityData = [
+    { name: 'US Farmland', symbol: 'LAND', returns: '+11.2%', type: 'Farmland', description: 'Prime agricultural land investments' },
+    { name: 'Cattle Operations', symbol: 'CATTLE', returns: '+18.5%', type: 'Livestock', description: 'Beef cattle farming operations' },
+    { name: 'Corn Production', symbol: 'CORN', returns: '+15.3%', type: 'Crops', description: 'Commercial corn farming' },
+    { name: 'Lithium Mining', symbol: 'LITH', returns: '+22.1%', type: 'Energy', description: 'Lithium extraction & processing' },
+    { name: 'Wheat Farms', symbol: 'WHEAT', returns: '+12.8%', type: 'Crops', description: 'Wheat cultivation operations' },
+    { name: 'Soybean Fields', symbol: 'SOY', returns: '+14.6%', type: 'Crops', description: 'Soybean production facilities' },
+  ];
 
-    loadMarketNews();
-  }, []);
-
-  useEffect(() => {
-    // Set static agricultural investment data
-    const loadCommodityData = () => {
-      setCommodityData([
-        { name: 'US Farmland', symbol: 'LAND', returns: '+11.2%', type: 'Farmland', description: 'Prime agricultural land investments' },
-        { name: 'Cattle Operations', symbol: 'CATTLE', returns: '+18.5%', type: 'Livestock', description: 'Beef cattle farming operations' },
-        { name: 'Corn Production', symbol: 'CORN', returns: '+15.3%', type: 'Crops', description: 'Commercial corn farming' },
-        { name: 'Lithium Mining', symbol: 'LITH', returns: '+22.1%', type: 'Energy', description: 'Lithium extraction & processing' },
-        { name: 'Wheat Farms', symbol: 'WHEAT', returns: '+12.8%', type: 'Crops', description: 'Wheat cultivation operations' },
-        { name: 'Soybean Fields', symbol: 'SOY', returns: '+14.6%', type: 'Crops', description: 'Soybean production facilities' },
-      ]);
-      setCommoditiesLoading(false);
-    };
-
-    loadCommodityData();
-  }, []);
+  // Loading states from centralized store
+  const newsLoading = false; // Static data, always loaded
+  const commoditiesLoading = false; // Static data, always loaded
+  const investmentsLoading = isLoading.investments;
 
   return (
     <div className="space-y-4">

@@ -1,22 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore';
-import { useUserRefetch } from '@/hooks/useUserRefetch';
+import { useState } from 'react';
+import { useUser } from '@/stores/useDashboardStore';
+import { useRefreshDashboardData } from '@/components/providers/DashboardProvider';
 
 export default function KYCPage() {
-  const user = useAuthStore((state) => state.user);
-  const fetchUser = useAuthStore((state) => state.fetchUser);
-  const refreshUser = useUserRefetch();
+  // Access data from centralized store - NO useEffect fetching needed!
+  const user = useUser();
+  const { refreshUser } = useRefreshDashboardData();
   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  
-  // Fetch fresh user data on page mount to ensure KYC status is current
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
   
   // Document upload states
   const [idFront, setIdFront] = useState<File | null>(null);

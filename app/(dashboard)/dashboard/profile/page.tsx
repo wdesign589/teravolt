@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useUser } from '@/stores/useDashboardStore';
+import { useRefreshDashboardData } from '@/components/providers/DashboardProvider';
 import Image from 'next/image';
 
 export default function ProfilePage() {
-  const user = useAuthStore((state) => state.user);
-  const fetchUser = useAuthStore((state) => state.fetchUser);
+  // Access data from centralized store
+  const user = useUser();
+  const { refreshUser } = useRefreshDashboardData();
   
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -66,8 +68,8 @@ export default function ProfilePage() {
 
       if (response.ok) {
         setSuccess(true);
-        // Refresh user data
-        await fetchUser();
+        // Refresh user data from centralized store
+        await refreshUser();
         
         // Clear success message after 3 seconds
         setTimeout(() => setSuccess(false), 3000);

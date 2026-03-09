@@ -1,12 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useState } from 'react';
+import { useDashboardStore, useUser } from '@/stores/useDashboardStore';
+import { useRefreshDashboardData } from '@/components/providers/DashboardProvider';
 import TraderCard from './TraderCard';
 
 export default function CopyTradingPage() {
-  const user = useAuthStore((state) => state.user);
-  const refetchUser = useAuthStore((state) => state.refetchUser);
+  // Access data from centralized store - NO useEffect fetching needed!
+  const user = useUser();
+  const refetchUser = useDashboardStore((state) => state.refetchUser);
+  const { refreshUser } = useRefreshDashboardData();
   
   const [selectedTrader, setSelectedTrader] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
@@ -16,11 +19,6 @@ export default function CopyTradingPage() {
   const [allocationAmount, setAllocationAmount] = useState('');
   const [isStarting, setIsStarting] = useState(false);
   const [isStopping, setIsStopping] = useState(false);
-
-  // Fetch fresh user data on mount
-  useEffect(() => {
-    refetchUser();
-  }, [refetchUser]);
 
   // Get copy traders from user context
   const traders = user?.copyTraders || [];

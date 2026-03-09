@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useState, useMemo } from 'react';
+import { useUser, useTransactions, useIsLoading } from '@/stores/useDashboardStore';
+import { useRefreshDashboardData } from '@/components/providers/DashboardProvider';
 
 interface Transaction {
   _id: string;
@@ -13,8 +14,12 @@ interface Transaction {
 }
 
 export default function WithdrawPage() {
-  const user = useAuthStore((state) => state.user);
-  const refetchUser = useAuthStore((state) => state.refetchUser);
+  // Access data from centralized store - NO useEffect fetching needed!
+  const user = useUser();
+  const allTransactions = useTransactions();
+  const isLoading = useIsLoading();
+  const { refreshTransactions } = useRefreshDashboardData();
+  
   const [selectedMethod, setSelectedMethod] = useState('crypto');
   const [selectedCrypto, setSelectedCrypto] = useState('BTC');
   const [amount, setAmount] = useState('');
@@ -27,26 +32,16 @@ export default function WithdrawPage() {
   });
   const [paypalEmail, setPaypalEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [recentWithdrawals, setRecentWithdrawals] = useState<Transaction[]>([]);
-  const [loadingWithdrawals, setLoadingWithdrawals] = useState(true);
 
-  useEffect(() => {
-    fetchRecentWithdrawals();
-  }, []);
+  // Loading state from centralized store
+  const loadingWithdrawals = isLoading.transactions;
 
-  const fetchRecentWithdrawals = async () => {
-    try {
-      const response = await fetch('/api/transactions?type=withdrawal&limit=3');
-      if (response.ok) {
-        const data = await response.json();
-        setRecentWithdrawals(data.transactions || []);
-      }
-    } catch (error) {
-      console.error('Failed to fetch withdrawals:', error);
-    } finally {
-      setLoadingWithdrawals(false);
-    }
-  };
+  // Filter recent withdrawals from transactions
+  const recentWithdrawals = useMemo(() => {
+    return (allTransactions as unknown as Transaction[])
+      .filter(t => t.type === 'withdrawal')
+      .slice(0, 3);
+  }, [allTransactions]);
 
   const validateWithdrawal = () => {
     const withdrawAmount = parseFloat(amount);
@@ -124,9 +119,8 @@ export default function WithdrawPage() {
         setAddress('');
         setBankDetails({ accountNumber: '', routingNumber: '', bankName: '', accountHolderName: '' });
         setPaypalEmail('');
-        // Refresh user data and withdrawals
-        await refetchUser();
-        fetchRecentWithdrawals();
+        // Refresh user data and transactions from centralized store
+        await refreshTransactions();
       } else {
         const data = await response.json();
         alert(data.error || 'Failed to submit withdrawal request');

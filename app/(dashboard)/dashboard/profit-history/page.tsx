@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useState, useMemo } from 'react';
+import { useUser, useTransactions, useIsLoading } from '@/stores/useDashboardStore';
 
 interface ProfitTransaction {
   _id: string;
@@ -14,113 +14,57 @@ interface ProfitTransaction {
   investmentId?: string;
 }
 
-interface ProfitStats {
-  totalProfit: number;
-  investmentProfit: number;
-  copyTradingProfit: number;
-  totalTransactions: number;
-  averageProfit: number;
-  monthlyProfits: { [key: string]: number };
-  profitBySource: {
-    investment: number;
-    copyTrading: number;
-  };
-}
-
 export default function ProfitHistoryPage() {
-  const user = useAuthStore((state) => state.user);
+  // Access data from centralized store - NO useEffect fetching needed!
+  const user = useUser();
+  const allTransactions = useTransactions();
+  const isLoading = useIsLoading();
+  
   const [selectedPeriod, setSelectedPeriod] = useState('all');
-  const [profitTransactions, setProfitTransactions] = useState<ProfitTransaction[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<ProfitStats>({
-    totalProfit: 0,
-    investmentProfit: 0,
-    copyTradingProfit: 0,
-    totalTransactions: 0,
-    averageProfit: 0,
-    monthlyProfits: {},
-    profitBySource: {
-      investment: 0,
-      copyTrading: 0,
-    },
-  });
 
-  useEffect(() => {
-    fetchProfitData();
-  }, []);
+  // Loading state from centralized store
+  const loading = isLoading.transactions;
 
-  const fetchProfitData = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch investment returns
-      const investmentResponse = await fetch('/api/transactions?type=investment_return&limit=100&status=completed');
-      const investmentData = investmentResponse.ok ? await investmentResponse.json() : { transactions: [] };
-      
-      // Fetch investment completions
-      const completionResponse = await fetch('/api/transactions?type=investment_completion&limit=100&status=completed');
-      const completionData = completionResponse.ok ? await completionResponse.json() : { transactions: [] };
-      
-      // Fetch copy trading returns
-      const copyTradingResponse = await fetch('/api/transactions?type=copy_trading_return&limit=100&status=completed');
-      const copyTradingData = copyTradingResponse.ok ? await copyTradingResponse.json() : { transactions: [] };
-      
-      // Combine all profit transactions
-      const allProfits = [
-        ...(investmentData.transactions || []),
-        ...(completionData.transactions || []),
-        ...(copyTradingData.transactions || []),
-      ];
-      
-      // Sort by date (most recent first)
-      allProfits.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      
-      setProfitTransactions(allProfits);
-      calculateStats(allProfits);
-    } catch (error) {
-      console.error('Failed to fetch profit data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const calculateStats = (transactions: ProfitTransaction[]) => {
-    let totalProfit = 0;
-    let investmentProfit = 0;
-    let copyTradingProfit = 0;
+  // Filter profit transactions and calculate stats from centralized store
+  const { profitTransactions, stats } = useMemo(() => {
+    const profitTypes = ['investment_return', 'investment_completion', 'copy_trading_return'];
+    const profits = (allTransactions as unknown as ProfitTransaction[])
+      .filter(t => profitTypes.includes(t.type) && t.status === 'completed');
+    
+    // Calculate stats
+    const investmentProfit = profits
+      .filter(t => t.type === 'investment_return' || t.type === 'investment_completion')
+      .reduce((sum, t) => sum + t.amount, 0);
+    
+    const copyTradingProfit = profits
+      .filter(t => t.type === 'copy_trading_return')
+      .reduce((sum, t) => sum + t.amount, 0);
+    
+    const totalProfit = investmentProfit + copyTradingProfit;
+    
+    // Calculate monthly profits
     const monthlyProfits: { [key: string]: number } = {};
-    
-    transactions.forEach((transaction) => {
-      const amount = transaction.amount;
-      totalProfit += amount;
-      
-      // Categorize by source
-      if (transaction.type === 'investment_return' || transaction.type === 'investment_completion') {
-        investmentProfit += amount;
-      } else if (transaction.type === 'copy_trading_return') {
-        copyTradingProfit += amount;
-      }
-      
-      // Calculate monthly profits
-      const monthKey = new Date(transaction.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
-      monthlyProfits[monthKey] = (monthlyProfits[monthKey] || 0) + amount;
+    profits.forEach(t => {
+      const month = new Date(t.createdAt).toLocaleString('en-US', { month: 'short', year: 'numeric' });
+      monthlyProfits[month] = (monthlyProfits[month] || 0) + t.amount;
     });
     
-    const averageProfit = transactions.length > 0 ? totalProfit / transactions.length : 0;
-    
-    setStats({
-      totalProfit,
-      investmentProfit,
-      copyTradingProfit,
-      totalTransactions: transactions.length,
-      averageProfit,
-      monthlyProfits,
-      profitBySource: {
-        investment: investmentProfit,
-        copyTrading: copyTradingProfit,
+    return {
+      profitTransactions: profits,
+      stats: {
+        totalProfit,
+        investmentProfit,
+        copyTradingProfit,
+        totalTransactions: profits.length,
+        averageProfit: profits.length > 0 ? totalProfit / profits.length : 0,
+        monthlyProfits,
+        profitBySource: {
+          investment: investmentProfit,
+          copyTrading: copyTradingProfit,
+        },
       },
-    });
-  };
+    };
+  }, [allTransactions]);
 
   const filterTransactionsByPeriod = (transactions: ProfitTransaction[]) => {
     if (selectedPeriod === 'all') return transactions;

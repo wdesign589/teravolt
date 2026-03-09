@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useState } from 'react';
+import { useUser } from '@/stores/useDashboardStore';
 
 export default function SettingsPage() {
-  const user = useAuthStore((state) => state.user);
+  // Access data from centralized store
+  const user = useUser();
   const [activeTab, setActiveTab] = useState('security');
   
   // Security Settings State

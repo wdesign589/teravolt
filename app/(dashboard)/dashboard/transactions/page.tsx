@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useState, useMemo } from 'react';
+import { useUser, useTransactions, useIsLoading } from '@/stores/useDashboardStore';
 import Image from 'next/image';
 
-interface Transaction {
+interface TransactionDisplay {
   _id: string;
   type: 'deposit' | 'withdrawal' | 'investment' | 'investment_return' | 'investment_completion' | 'copy_trading_return';
   amount: number;
@@ -30,41 +30,32 @@ interface Transaction {
 }
 
 export default function TransactionsPage() {
-  const user = useAuthStore((state) => state.user);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Access data from centralized store - NO useEffect fetching needed!
+  const user = useUser();
+  const allTransactions = useTransactions();
+  const isLoading = useIsLoading();
+  
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [selectedTransaction, setSelectedTransaction] = useState<TransactionDisplay | null>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
 
-  useEffect(() => {
-    fetchTransactions();
-  }, [typeFilter, statusFilter]);
+  // Loading state from centralized store
+  const loading = isLoading.transactions;
 
-  const fetchTransactions = async () => {
-    try {
-      setLoading(true);
-      let url = '/api/transactions?limit=100';
-      
-      if (typeFilter !== 'all') {
-        url += `&type=${typeFilter}`;
-      }
-      if (statusFilter !== 'all') {
-        url += `&status=${statusFilter}`;
-      }
-
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        setTransactions(data.transactions || []);
-      }
-    } catch (error) {
-      console.error('Failed to fetch transactions:', error);
-    } finally {
-      setLoading(false);
+  // Filter transactions based on selected filters
+  const transactions = useMemo(() => {
+    let filtered = allTransactions as unknown as TransactionDisplay[];
+    
+    if (typeFilter !== 'all') {
+      filtered = filtered.filter(t => t.type === typeFilter);
     }
-  };
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(t => t.status === statusFilter);
+    }
+    
+    return filtered;
+  }, [allTransactions, typeFilter, statusFilter]);
 
   const getTransactionIcon = (type: string) => {
     switch (type) {
@@ -138,7 +129,7 @@ export default function TransactionsPage() {
     }
   };
 
-  const openDetailModal = (transaction: Transaction) => {
+  const openDetailModal = (transaction: TransactionDisplay) => {
     setSelectedTransaction(transaction);
     setShowDetailModal(true);
   };

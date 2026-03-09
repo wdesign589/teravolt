@@ -4,11 +4,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useDashboardStore } from '@/stores/useDashboardStore';
 
 export default function SignInPage() {
   const router = useRouter();
-  const { setUser, fetchUser } = useAuthStore();
+  const setUser = useDashboardStore((state) => state.setUser);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,13 +50,11 @@ export default function SignInPage() {
       }
       
       // Store initial user data in Zustand (from login response)
+      // The DashboardProvider will handle full data initialization
       setUser(data.user);
       
-      // Fetch complete user data from database
-      // This populates all fields including balance, investments, etc.
-      await fetchUser();
-      
       // Redirect based on user role
+      // DashboardProvider will initialize all data when dashboard loads
       if (data.user.role === 'admin') {
         router.push('/admin');
       } else {

@@ -1,54 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/stores/useAuthStore';
-
-interface InvestmentPlan {
-  id: string;
-  name: string;
-  description: string;
-  minimumAmount: number;
-  maximumAmount: number;
-  durationDays: number;
-  percentageReturn: number;
-  dailyReturn: number;
-  features: string[];
-  risk: 'low' | 'medium' | 'high';
-  category: string;
-}
+import { useDashboardStore, useUser, useInvestmentPlans, useIsLoading } from '@/stores/useDashboardStore';
+import { useRefreshDashboardData } from '@/components/providers/DashboardProvider';
 
 export default function InvestPage() {
   const router = useRouter();
-  const user = useAuthStore((state) => state.user);
-  const refetchUser = useAuthStore((state) => state.refetchUser);
-  const [plans, setPlans] = useState<InvestmentPlan[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedPlan, setSelectedPlan] = useState<InvestmentPlan | null>(null);
+  
+  // Access data from centralized store - NO useEffect fetching needed!
+  const user = useUser();
+  const plans = useInvestmentPlans();
+  const isLoading = useIsLoading();
+  const { refreshInvestments } = useRefreshDashboardData();
+  
+  const [selectedPlan, setSelectedPlan] = useState<typeof plans[0] | null>(null);
   const [amount, setAmount] = useState('');
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [investing, setInvesting] = useState(false);
 
-  useEffect(() => {
-    fetchPlans();
-  }, []);
+  // Loading state from centralized store
+  const loading = isLoading.investmentPlans;
 
-  const fetchPlans = async () => {
-    try {
-      const response = await fetch('/api/investments');
-      const data = await response.json();
-      
-      if (data.success) {
-        setPlans(data.investments);
-      }
-    } catch (error) {
-      console.error('Error fetching plans:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleInvestClick = (plan: InvestmentPlan) => {
+  const handleInvestClick = (plan: typeof plans[0]) => {
     setSelectedPlan(plan);
     setAmount(plan.minimumAmount.toString());
     setAcceptedTerms(false);
@@ -125,12 +99,11 @@ export default function InvestPage() {
 
       alert('🎉 Investment created successfully! You will receive daily profits automatically.');
       
-      // Refresh user data to update balance
-      await refetchUser();
+      // Refresh user and investment data from centralized store
+      await refreshInvestments();
       
-      // Close modal and refresh plans
+      // Close modal
       closeModal();
-      fetchPlans();
     } catch (error: any) {
       console.error('Error creating investment:', error);
       alert(error.message || 'Failed to create investment');

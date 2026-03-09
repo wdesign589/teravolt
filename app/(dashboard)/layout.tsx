@@ -5,7 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useDashboardStore } from '@/stores/useDashboardStore';
+import DashboardProvider from '@/components/providers/DashboardProvider';
 import GoogleTranslate from '@/components/GoogleTranslate';
 
 // Declare Smartsupp types for TypeScript
@@ -23,8 +24,8 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const user = useAuthStore((state) => state.user); // Access complete user data
-  const logout = useAuthStore((state) => state.logout);
+  const user = useDashboardStore((state) => state.user);
+  const logout = useDashboardStore((state) => state.logout);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -225,7 +226,7 @@ export default function DashboardLayout({
 
   const isActive = (href: string) => pathname === href;
 
-  return (
+  const layoutContent = (
     <div className="min-h-screen bg-slate-50">
       {/* Modern Sidebar */}
       <aside className="fixed left-0 top-0 h-full w-72 bg-white border-r border-slate-200 shadow-sm z-50 flex flex-col">
@@ -568,4 +569,7 @@ export default function DashboardLayout({
       </div>
     </div>
   );
+
+  // Wrap the entire layout with DashboardProvider
+  return <DashboardProvider>{layoutContent}</DashboardProvider>;
 }

@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useUser, useAdminWallets, useTransactions, useIsLoading } from '@/stores/useDashboardStore';
+import { useRefreshDashboardData } from '@/components/providers/DashboardProvider';
 
 interface Wallet {
   _id: string;
-  symbol: string;
-  name: string;
+  symbol?: string;
+  cryptocurrency?: string;
+  name?: string;
   address: string;
-  qrCodeUrl: string;
+  qrCodeUrl?: string;
   network?: string;
   isActive: boolean;
 }
@@ -24,17 +26,19 @@ interface Transaction {
 }
 
 export default function DepositPage() {
-  const user = useAuthStore((state) => state.user);
+  // Access data from centralized store - NO useEffect fetching needed!
+  const user = useUser();
+  const adminWallets = useAdminWallets();
+  const allTransactions = useTransactions();
+  const isLoading = useIsLoading();
+  const { refreshTransactions } = useRefreshDashboardData();
+  
   const [selectedMethod, setSelectedMethod] = useState('crypto');
-  const [wallets, setWallets] = useState<Wallet[]>([]);
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
-  const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [submitWallet, setSubmitWallet] = useState<Wallet | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [recentDeposits, setRecentDeposits] = useState<Transaction[]>([]);
-  const [loadingDeposits, setLoadingDeposits] = useState(true);
   const [proofImage, setProofImage] = useState<File | null>(null);
   const [proofPreview, setProofPreview] = useState<string>('');
   const [submitForm, setSubmitForm] = useState({
@@ -42,41 +46,36 @@ export default function DepositPage() {
     amount: '',
   });
 
+  // Loading states from centralized store
+  const loading = isLoading.wallets;
+  const loadingDeposits = isLoading.transactions;
+
+  // Map admin wallets to the expected format
+  const wallets = useMemo(() => {
+    return adminWallets.map(w => ({
+      _id: w._id,
+      symbol: w.cryptocurrency,
+      cryptocurrency: w.cryptocurrency,
+      name: w.cryptocurrency,
+      address: w.address,
+      network: w.network,
+      isActive: w.isActive,
+    })) as Wallet[];
+  }, [adminWallets]);
+
+  // Filter recent deposits from transactions
+  const recentDeposits = useMemo(() => {
+    return (allTransactions as unknown as Transaction[])
+      .filter(t => t.type === 'deposit')
+      .slice(0, 5);
+  }, [allTransactions]);
+
+  // Set selected wallet when wallets load
   useEffect(() => {
-    fetchWallets();
-    fetchRecentDeposits();
-  }, []);
-
-  const fetchWallets = async () => {
-    try {
-      const response = await fetch('/api/wallets');
-      if (response.ok) {
-        const data = await response.json();
-        setWallets(data.wallets);
-        if (data.wallets.length > 0) {
-          setSelectedWallet(data.wallets[0]);
-        }
-      }
-    } catch (error) {
-      console.error('Failed to fetch wallets:', error);
-    } finally {
-      setLoading(false);
+    if (wallets.length > 0 && !selectedWallet) {
+      setSelectedWallet(wallets[0]);
     }
-  };
-
-  const fetchRecentDeposits = async () => {
-    try {
-      const response = await fetch('/api/transactions?type=deposit&limit=3');
-      if (response.ok) {
-        const data = await response.json();
-        setRecentDeposits(data.transactions || []);
-      }
-    } catch (error) {
-      console.error('Failed to fetch deposits:', error);
-    } finally {
-      setLoadingDeposits(false);
-    }
-  };
+  }, [wallets, selectedWallet]);
 
   const copyToClipboard = async (text: string) => {
     try {
@@ -126,7 +125,7 @@ export default function DepositPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          walletSymbol: submitWallet.symbol,
+          walletSymbol: submitWallet.symbol || submitWallet.cryptocurrency,
           transactionHash: submitForm.transactionHash,
           amount: parseFloat(submitForm.amount),
           proofUrl,
@@ -139,7 +138,7 @@ export default function DepositPage() {
         setSubmitForm({ transactionHash: '', amount: '' });
         setProofImage(null);
         setProofPreview('');
-        fetchRecentDeposits();
+        refreshTransactions();
       } else {
         const data = await response.json();
         alert(data.error || 'Failed to submit deposit');
@@ -239,7 +238,7 @@ export default function DepositPage() {
                             : 'border-slate-200 hover:border-slate-300 bg-white'
                         }`}
                       >
-                        <div className="text-sm font-bold text-slate-900">{wallet.symbol.replace('_', ' ')}</div>
+                        <div className="text-sm font-bold text-slate-900">{(wallet.symbol || wallet.cryptocurrency || '').replace('_', ' ')}</div>
                         <div className="text-xs text-slate-500 mt-1">{wallet.name}</div>
                         {wallet.network && (
                           <div className="text-xs text-slate-400 mt-1">{wallet.network}</div>
@@ -258,7 +257,7 @@ export default function DepositPage() {
                         <p className="text-sm text-slate-600">{selectedWallet.network || 'Network'}</p>
                       </div>
                       <div className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-semibold">
-                        {selectedWallet.symbol.replace('_', ' ')}
+                        {(selectedWallet.symbol || selectedWallet.cryptocurrency || '').replace('_', ' ')}
                       </div>
                     </div>
 
@@ -329,7 +328,7 @@ export default function DepositPage() {
                             <div>
                               <div className="text-sm font-bold text-amber-900 mb-1">⚠️ Important</div>
                               <div className="text-xs text-amber-800">
-                                Send only <strong>{selectedWallet.symbol.replace('_', ' ')}</strong> to this address.
+                                Send only <strong>{(selectedWallet.symbol || selectedWallet.cryptocurrency || '').replace('_', ' ')}</strong> to this address.
                                 {selectedWallet.network && ` Make sure to use the ${selectedWallet.network}.`}
                                 {' '}Sending other assets may result in permanent loss.
                               </div>
@@ -541,7 +540,7 @@ export default function DepositPage() {
                 <span className="font-bold text-emerald-900 text-sm">Wallet: {submitWallet.name}</span>
               </div>
               <div className="text-xs text-emerald-800">
-                Submit your transaction details after sending {submitWallet.symbol.replace('_', ' ')} to our wallet address.
+                Submit your transaction details after sending {(submitWallet.symbol || submitWallet.cryptocurrency || '').replace('_', ' ')} to our wallet address.
               </div>
             </div>
 
