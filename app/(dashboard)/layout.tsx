@@ -34,7 +34,8 @@ export default function DashboardLayout({
   // Handle logout
   const handleLogout = () => {
     logout();
-    router.push('/sign-in');
+    // Use window.location.href to ensure proper redirect after state is cleared
+    window.location.href = '/sign-in';
   };
 
   // Force desktop viewport on mobile
