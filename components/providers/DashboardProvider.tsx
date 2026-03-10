@@ -14,6 +14,15 @@ interface DashboardProviderProps {
 let globalInitStarted = false;
 
 /**
+ * Reset the initialization flag - call this on logout
+ * so the dashboard will re-initialize on next login
+ */
+export function resetDashboardInit() {
+  globalInitStarted = false;
+  console.log('🔄 [DashboardProvider] Init flag reset');
+}
+
+/**
  * DashboardProvider
  * 
  * CRITICAL: This provider NEVER blocks rendering.

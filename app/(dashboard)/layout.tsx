@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useDashboardStore } from '@/stores/useDashboardStore';
-import DashboardProvider from '@/components/providers/DashboardProvider';
+import DashboardProvider, { resetDashboardInit } from '@/components/providers/DashboardProvider';
 import GoogleTranslate from '@/components/GoogleTranslate';
 
 // Declare Smartsupp types for TypeScript
@@ -33,7 +33,9 @@ export default function DashboardLayout({
   
   // Handle logout
   const handleLogout = () => {
-    logout();
+    console.log('🔒 Logging out...');
+    resetDashboardInit(); // Reset init flag so dashboard re-initializes on next login
+    logout(); // Clear store state and localStorage
     // Use window.location.href to ensure proper redirect after state is cleared
     window.location.href = '/sign-in';
   };

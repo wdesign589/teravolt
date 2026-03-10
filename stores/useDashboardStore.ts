@@ -529,6 +529,11 @@ export const useDashboardStore = create<DashboardState>()(
         // Clear auth cookie
         document.cookie = 'auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
         
+        // Clear persisted Zustand state from localStorage
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('dashboard-storage');
+        }
+        
         // Reset all state
         set({ 
           user: null, 
@@ -543,7 +548,7 @@ export const useDashboardStore = create<DashboardState>()(
           errors: initialErrorState,
         });
         
-        console.log('🚪 [DashboardStore] User logged out, state cleared');
+        console.log('🚪 [DashboardStore] User logged out, state and localStorage cleared');
       },
 
       /**
