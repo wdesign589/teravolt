@@ -124,8 +124,8 @@ export default function LithiumInvestmentPage() {
               
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-5xl font-light text-slate-900">$2,000</span>
-                  <span className="text-slate-400 text-lg">– $25K</span>
+                  <span className="text-5xl font-light text-slate-900">$50K</span>
+                  <span className="text-slate-400 text-lg">– $250K</span>
                 </div>
                 <p className="text-slate-500 text-sm mt-2">entry-level investment</p>
               </div>
@@ -189,8 +189,8 @@ export default function LithiumInvestmentPage() {
               
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-5xl font-light text-white">$25K</span>
-                  <span className="text-slate-400 text-lg">– $500K</span>
+                  <span className="text-5xl font-light text-white">$250K</span>
+                  <span className="text-slate-400 text-lg">– $1.5M</span>
                 </div>
                 <p className="text-slate-400 text-sm mt-2">flexible investment range</p>
               </div>
@@ -249,8 +249,8 @@ export default function LithiumInvestmentPage() {
               
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-5xl font-light text-slate-900">$50K</span>
-                  <span className="text-slate-400 text-lg">– $1M</span>
+                  <span className="text-5xl font-light text-slate-900">$500K</span>
+                  <span className="text-slate-400 text-lg">– $10M</span>
                 </div>
                 <p className="text-slate-500 text-sm mt-2">institutional investment</p>
               </div>
@@ -381,7 +381,7 @@ export default function LithiumInvestmentPage() {
             Ready to Invest in the <span className="text-orange-400">Energy Future</span>?
           </h2>
           <p className="text-lg text-slate-400 mb-8">
-            Join investors powering the clean energy transition. Start with logistics contracts from $2,000 or explore production investments.
+            Join investors powering the clean energy transition. Start with logistics contracts from $50,000 or explore production investments.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

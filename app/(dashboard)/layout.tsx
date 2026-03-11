@@ -568,9 +568,7 @@ export default function DashboardLayout({
 
         {/* Page Content */}
         <main className="p-8">
-          <div className="max-w-6xl mx-auto">
-            {children}
-          </div>
+          {children}
         </main>
       </div>
     </div>
