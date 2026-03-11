@@ -264,7 +264,7 @@ export default function Home() {
                 <div className="flex items-center justify-between py-3 border-t border-slate-100">
                   <div>
                     <div className="text-xs text-slate-500">Target Returns</div>
-                    <div className="text-lg font-medium text-emerald-600">11 - 15% p.a.</div>
+                    <div className="text-lg font-medium text-emerald-600">76 - 90% p.a.</div>
                   </div>
                   <div className="text-right">
                     <div className="text-xs text-slate-500">Min. Investment</div>
