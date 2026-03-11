@@ -226,7 +226,7 @@ export default function FarmlandInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-emerald-600 font-semibold">6-10%</span>
+                  <span className="text-emerald-600 font-semibold">76-90%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>
@@ -292,7 +292,7 @@ export default function FarmlandInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Target Returns</span>
-                  <span className="text-emerald-400 font-semibold">12-18%</span>
+                  <span className="text-emerald-400 font-semibold">85-105%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Risk Level</span>
@@ -352,7 +352,7 @@ export default function FarmlandInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-emerald-600 font-semibold">11.5%+ avg</span>
+                  <span className="text-emerald-600 font-semibold">95-130%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>

@@ -120,7 +120,7 @@ export default function CropProductionPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-emerald-600 font-semibold">18-30%</span>
+                  <span className="text-emerald-600 font-semibold">76-95%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>
@@ -187,7 +187,7 @@ export default function CropProductionPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Target Returns</span>
-                  <span className="text-emerald-400 font-semibold">30-60%+</span>
+                  <span className="text-emerald-400 font-semibold">85-120%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Risk Level</span>

@@ -12,7 +12,7 @@ export default function LivestockInvestmentPage() {
       <section className="relative pt-32 pb-24 min-h-[60vh] flex items-end">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/15ba644e-81cd-4531-b325-417a414dfef8.webp"
+            src="/livestock-cattle.webp"
             alt="Livestock Farming"
             fill
             className="object-cover"
@@ -119,7 +119,7 @@ export default function LivestockInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-emerald-600 font-semibold">12-25%</span>
+                  <span className="text-emerald-600 font-semibold">76-90%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>
@@ -185,7 +185,7 @@ export default function LivestockInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Target Returns</span>
-                  <span className="text-emerald-400 font-semibold">Revenue Share</span>
+                  <span className="text-emerald-400 font-semibold">80-110%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Risk Level</span>
@@ -246,7 +246,7 @@ export default function LivestockInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-emerald-600 font-semibold">55-68%</span>
+                  <span className="text-emerald-600 font-semibold">95-135%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>

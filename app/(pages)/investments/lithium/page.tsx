@@ -12,7 +12,7 @@ export default function LithiumInvestmentPage() {
       <section className="relative pt-32 pb-24 min-h-[60vh] flex items-end">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/1e0648bd-b076-4900-9819-fb7100ec376b.webp"
+            src="/lithium-mining.webp"
             alt="Lithium-Ion Energy"
             fill
             className="object-cover"
@@ -137,7 +137,7 @@ export default function LithiumInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-emerald-600 font-semibold">8-20%</span>
+                  <span className="text-emerald-600 font-semibold">76-95%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>
@@ -202,7 +202,7 @@ export default function LithiumInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Target Returns</span>
-                  <span className="text-emerald-400 font-semibold">15-35%</span>
+                  <span className="text-emerald-400 font-semibold">85-115%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Risk Level</span>
@@ -262,7 +262,7 @@ export default function LithiumInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-orange-600 font-semibold">20-50%</span>
+                  <span className="text-orange-600 font-semibold">100-150%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>

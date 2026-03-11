@@ -1,9 +1,15 @@
+'use client';
+
+import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import Image from 'next/image';
+import CFDTradingModal from '@/components/CFDTradingModal';
 
 export default function TradingPage() {
+  const [goldModalOpen, setGoldModalOpen] = useState(false);
+  const [oilModalOpen, setOilModalOpen] = useState(false);
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
@@ -241,15 +247,15 @@ export default function TradingPage() {
               <p className="text-lg text-slate-600 mb-8">
                 Trade gold CFDs to gain exposure to gold price movements without the need to physically store the metal. Benefit from tight spreads and professional execution.
               </p>
-              <Link
-                href="/sign-up"
+              <button
+                onClick={() => setGoldModalOpen(true)}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full font-semibold transition-all"
               >
                 Start Trading Gold
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -284,15 +290,15 @@ export default function TradingPage() {
                 ))}
               </div>
 
-              <Link
-                href="/sign-up"
+              <button
+                onClick={() => setOilModalOpen(true)}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-full font-semibold transition-all"
               >
                 Start Trading Oil
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </Link>
+              </button>
             </div>
 
             <div className="bg-slate-800 rounded-2xl p-8 border border-slate-700">
@@ -403,6 +409,18 @@ export default function TradingPage() {
       </section>
 
       <Footer />
+
+      {/* Trading Modals */}
+      <CFDTradingModal 
+        isOpen={goldModalOpen} 
+        onClose={() => setGoldModalOpen(false)} 
+        assetType="gold" 
+      />
+      <CFDTradingModal 
+        isOpen={oilModalOpen} 
+        onClose={() => setOilModalOpen(false)} 
+        assetType="oil" 
+      />
     </div>
   );
 }
