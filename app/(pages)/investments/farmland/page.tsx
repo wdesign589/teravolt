@@ -222,11 +222,11 @@ export default function FarmlandInvestmentPage() {
               <div className="space-y-4 mb-8 flex-grow">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Duration</span>
-                  <span className="text-slate-900 font-medium">1–5 years</span>
+                  <span className="text-slate-900 font-medium">1-5 years</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-emerald-600 font-semibold">6–10%</span>
+                  <span className="text-emerald-600 font-semibold">6-10%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>
@@ -288,11 +288,11 @@ export default function FarmlandInvestmentPage() {
               <div className="space-y-4 mb-8 flex-grow">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Duration</span>
-                  <span className="text-white font-medium">2–7 years</span>
+                  <span className="text-white font-medium">2-7 years</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Target Returns</span>
-                  <span className="text-emerald-400 font-semibold">12–18%</span>
+                  <span className="text-emerald-400 font-semibold">12-18%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Risk Level</span>
@@ -348,7 +348,7 @@ export default function FarmlandInvestmentPage() {
               <div className="space-y-4 mb-8 flex-grow">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Duration</span>
-                  <span className="text-slate-900 font-medium">5–10+ years</span>
+                  <span className="text-slate-900 font-medium">5-10+ years</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
@@ -356,7 +356,7 @@ export default function FarmlandInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>
-                  <span className="text-slate-900 font-medium">Low–Medium</span>
+                  <span className="text-slate-900 font-medium">Low-Medium</span>
                 </div>
               </div>
 

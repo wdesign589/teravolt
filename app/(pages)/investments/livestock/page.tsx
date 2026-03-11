@@ -115,15 +115,15 @@ export default function LivestockInvestmentPage() {
               <div className="space-y-4 mb-8 flex-grow">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Duration</span>
-                  <span className="text-slate-900 font-medium">6–12 months</span>
+                  <span className="text-slate-900 font-medium">6-12 months</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-emerald-600 font-semibold">12–25%</span>
+                  <span className="text-emerald-600 font-semibold">12-25%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>
-                  <span className="text-slate-900 font-medium">Low–Medium</span>
+                  <span className="text-slate-900 font-medium">Low-Medium</span>
                 </div>
               </div>
 
@@ -173,7 +173,7 @@ export default function LivestockInvestmentPage() {
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
                   <span className="text-5xl font-light text-white">$11,000</span>
-                  <span className="text-slate-400 text-lg">– $45,500</span>
+                  <span className="text-slate-400 text-lg">- $45,500</span>
                 </div>
                 <p className="text-slate-400 text-sm mt-2">flexible investment range</p>
               </div>
@@ -181,7 +181,7 @@ export default function LivestockInvestmentPage() {
               <div className="space-y-4 mb-8 flex-grow">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Duration</span>
-                  <span className="text-white font-medium">12–48 months</span>
+                  <span className="text-white font-medium">12-48 months</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Target Returns</span>
@@ -189,7 +189,7 @@ export default function LivestockInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Risk Level</span>
-                  <span className="text-white font-medium">Low–Medium</span>
+                  <span className="text-white font-medium">Low-Medium</span>
                 </div>
               </div>
 
@@ -234,7 +234,7 @@ export default function LivestockInvestmentPage() {
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
                   <span className="text-5xl font-light text-slate-900">$125K</span>
-                  <span className="text-slate-400 text-lg">– $5M</span>
+                  <span className="text-slate-400 text-lg">- $5M</span>
                 </div>
                 <p className="text-slate-500 text-sm mt-2">institutional investment</p>
               </div>
@@ -246,7 +246,7 @@ export default function LivestockInvestmentPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-emerald-600 font-semibold">55–68%</span>
+                  <span className="text-emerald-600 font-semibold">55-68%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>

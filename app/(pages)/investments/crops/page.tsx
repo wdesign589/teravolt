@@ -108,7 +108,7 @@ export default function CropProductionPage() {
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
                   <span className="text-5xl font-light text-slate-900">$5,000</span>
-                  <span className="text-slate-400 text-lg">– $25K</span>
+                  <span className="text-slate-400 text-lg">- $25K</span>
                 </div>
                 <p className="text-slate-500 text-sm mt-2">flexible investment range</p>
               </div>
@@ -116,11 +116,11 @@ export default function CropProductionPage() {
               <div className="space-y-4 mb-8 flex-grow">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Duration</span>
-                  <span className="text-slate-900 font-medium">6–12 months</span>
+                  <span className="text-slate-900 font-medium">6-12 months</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-emerald-600 font-semibold">18–30%</span>
+                  <span className="text-emerald-600 font-semibold">18-30%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>
@@ -175,7 +175,7 @@ export default function CropProductionPage() {
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
                   <span className="text-5xl font-light text-white">$25K</span>
-                  <span className="text-slate-400 text-lg">– $500K+</span>
+                  <span className="text-slate-400 text-lg">- $500K+</span>
                 </div>
                 <p className="text-slate-400 text-sm mt-2">institutional investment</p>
               </div>
@@ -183,15 +183,15 @@ export default function CropProductionPage() {
               <div className="space-y-4 mb-8 flex-grow">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Duration</span>
-                  <span className="text-white font-medium">12–36 months</span>
+                  <span className="text-white font-medium">12-36 months</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Target Returns</span>
-                  <span className="text-emerald-400 font-semibold">30–60%+</span>
+                  <span className="text-emerald-400 font-semibold">30-60%+</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Risk Level</span>
-                  <span className="text-white font-medium">Medium–High</span>
+                  <span className="text-white font-medium">Medium-High</span>
                 </div>
               </div>
 

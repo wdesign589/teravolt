@@ -125,7 +125,7 @@ export default function LithiumInvestmentPage() {
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
                   <span className="text-5xl font-light text-slate-900">$50K</span>
-                  <span className="text-slate-400 text-lg">– $250K</span>
+                  <span className="text-slate-400 text-lg">- $250K</span>
                 </div>
                 <p className="text-slate-500 text-sm mt-2">entry-level investment</p>
               </div>
@@ -133,15 +133,15 @@ export default function LithiumInvestmentPage() {
               <div className="space-y-4 mb-8 flex-grow">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Duration</span>
-                  <span className="text-slate-900 font-medium">6–24 months</span>
+                  <span className="text-slate-900 font-medium">6-24 months</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-emerald-600 font-semibold">8–20%</span>
+                  <span className="text-emerald-600 font-semibold">8-20%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>
-                  <span className="text-slate-900 font-medium">Low–Medium</span>
+                  <span className="text-slate-900 font-medium">Low-Medium</span>
                 </div>
               </div>
 
@@ -190,7 +190,7 @@ export default function LithiumInvestmentPage() {
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
                   <span className="text-5xl font-light text-white">$250K</span>
-                  <span className="text-slate-400 text-lg">– $1.5M</span>
+                  <span className="text-slate-400 text-lg">- $1.5M</span>
                 </div>
                 <p className="text-slate-400 text-sm mt-2">flexible investment range</p>
               </div>
@@ -198,11 +198,11 @@ export default function LithiumInvestmentPage() {
               <div className="space-y-4 mb-8 flex-grow">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Duration</span>
-                  <span className="text-white font-medium">1–5 years</span>
+                  <span className="text-white font-medium">1-5 years</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Target Returns</span>
-                  <span className="text-emerald-400 font-semibold">15–35%</span>
+                  <span className="text-emerald-400 font-semibold">15-35%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-sm">Risk Level</span>
@@ -250,7 +250,7 @@ export default function LithiumInvestmentPage() {
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
                   <span className="text-5xl font-light text-slate-900">$500K</span>
-                  <span className="text-slate-400 text-lg">– $10M</span>
+                  <span className="text-slate-400 text-lg">- $10M</span>
                 </div>
                 <p className="text-slate-500 text-sm mt-2">institutional investment</p>
               </div>
@@ -258,15 +258,15 @@ export default function LithiumInvestmentPage() {
               <div className="space-y-4 mb-8 flex-grow">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Duration</span>
-                  <span className="text-slate-900 font-medium">2–6 years</span>
+                  <span className="text-slate-900 font-medium">2-6 years</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Target Returns</span>
-                  <span className="text-orange-600 font-semibold">20–50%</span>
+                  <span className="text-orange-600 font-semibold">20-50%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 text-sm">Risk Level</span>
-                  <span className="text-slate-900 font-medium">Medium–High</span>
+                  <span className="text-slate-900 font-medium">Medium-High</span>
                 </div>
               </div>
 
