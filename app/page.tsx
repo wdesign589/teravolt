@@ -408,7 +408,7 @@ export default function Home() {
                   </div>
                   <div className="text-right">
                     <div className="text-xs text-slate-500">Min. Investment</div>
-                    <div className="text-lg font-medium text-slate-900">$250</div>
+                    <div className="text-lg font-medium text-slate-900">$5,000</div>
                   </div>
                 </div>
                 <Link href="/trading" className="mt-4 block w-full py-3 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors">
@@ -443,7 +443,7 @@ export default function Home() {
                   </div>
                   <div className="text-right">
                     <div className="text-xs text-slate-500">Funding Range</div>
-                    <div className="text-lg font-medium text-slate-900">$5K - $500K</div>
+                    <div className="text-lg font-medium text-slate-900">$50K - $5M</div>
                   </div>
                 </div>
                 <Link href="/grants" className="mt-4 block w-full py-3 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors">

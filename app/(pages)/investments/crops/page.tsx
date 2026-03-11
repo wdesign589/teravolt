@@ -107,7 +107,7 @@ export default function CropProductionPage() {
               
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-5xl font-light text-slate-900">$2,000</span>
+                  <span className="text-5xl font-light text-slate-900">$5,000</span>
                   <span className="text-slate-400 text-lg">– $25K</span>
                 </div>
                 <p className="text-slate-500 text-sm mt-2">flexible investment range</p>

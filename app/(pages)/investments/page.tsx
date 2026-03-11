@@ -93,7 +93,7 @@ export default function InvestmentsPage() {
                       Participate in commercial-scale farming operations. Earn returns aligned with harvest cycles and market demand.
                     </p>
                     <div className="flex flex-wrap gap-4 text-sm">
-                      <span className="text-emerald-600 font-semibold">From $2,000</span>
+                      <span className="text-emerald-600 font-semibold">From $5,000</span>
                       <span className="text-slate-400">|</span>
                       <span className="text-slate-600">18-60% Returns</span>
                       <span className="text-slate-400">|</span>
@@ -149,7 +149,7 @@ export default function InvestmentsPage() {
                       Invest in the future of renewable energy. Access lithium-ion production and transportation opportunities.
                     </p>
                     <div className="flex flex-wrap gap-4 text-sm">
-                      <span className="text-orange-600 font-semibold">From $2,000</span>
+                      <span className="text-orange-600 font-semibold">From $50,000</span>
                       <span className="text-slate-400">|</span>
                       <span className="text-slate-600">8-50% Returns</span>
                       <span className="text-slate-400">|</span>
