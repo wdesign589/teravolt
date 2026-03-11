@@ -299,11 +299,11 @@ export default function Home() {
                 <div className="flex items-center justify-between py-3 border-t border-slate-100">
                   <div>
                     <div className="text-xs text-slate-500">Target Returns</div>
-                    <div className="text-lg font-medium text-emerald-600">18 - 30% p.a.</div>
+                    <div className="text-lg font-medium text-emerald-600">76 - 95% p.a.</div>
                   </div>
                   <div className="text-right">
                     <div className="text-xs text-slate-500">Min. Investment</div>
-                    <div className="text-lg font-medium text-slate-900">$2,000</div>
+                    <div className="text-lg font-medium text-slate-900">$5,000</div>
                   </div>
                 </div>
                 <Link href="/investments/crops" className="mt-4 block w-full py-3 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors">
@@ -334,7 +334,7 @@ export default function Home() {
                 <div className="flex items-center justify-between py-3 border-t border-slate-100">
                   <div>
                     <div className="text-xs text-slate-500">Target Returns</div>
-                    <div className="text-lg font-medium text-emerald-600">12 - 25% p.a.</div>
+                    <div className="text-lg font-medium text-emerald-600">76 - 90% p.a.</div>
                   </div>
                   <div className="text-right">
                     <div className="text-xs text-slate-500">Min. Investment</div>
@@ -369,11 +369,11 @@ export default function Home() {
                 <div className="flex items-center justify-between py-3 border-t border-slate-100">
                   <div>
                     <div className="text-xs text-slate-500">Target Returns</div>
-                    <div className="text-lg font-medium text-orange-600">15 - 50% p.a.</div>
+                    <div className="text-lg font-medium text-orange-600">76 - 150% p.a.</div>
                   </div>
                   <div className="text-right">
                     <div className="text-xs text-slate-500">Min. Investment</div>
-                    <div className="text-lg font-medium text-slate-900">$2,000</div>
+                    <div className="text-lg font-medium text-slate-900">$50,000</div>
                   </div>
                 </div>
                 <Link href="/investments/lithium" className="mt-4 block w-full py-3 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors">
