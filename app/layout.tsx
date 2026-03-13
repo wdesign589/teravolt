@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Terravolt - Crypto Investment Platform",
-  description: "Explore the world of crypto with ease and security. Invest in cryptocurrencies, copy trading, and earn passive income with our secure platform.",
-  keywords: ["crypto", "cryptocurrency", "investment", "trading", "bitcoin", "ethereum", "copy trading", "passive income", "blockchain"],
+  title: "TerraVolt - Agricultural & Energy Investment Platform",
+  description: "Invest in sustainable agriculture, farmland, livestock, lithium energy, and commodity trading. High-yield investment opportunities with transparent returns.",
+  keywords: ["agricultural investment", "farmland", "livestock", "lithium energy", "commodity trading", "sustainable agriculture", "investment platform", "high yield returns", "CFD trading"],
   authors: [{ name: "Teravolt Incorporated" }],
   creator: "Teravolt Incorporated",
   publisher: "Teravolt Incorporated",
@@ -41,14 +41,14 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: process.env.NEXT_PUBLIC_APP_URL || "https://www.terravolt.com",
     siteName: "Terravolt",
-    title: "Terravolt - Crypto Investment Platform",
-    description: "Explore the world of crypto with ease and security. Invest in cryptocurrencies, copy trading, and earn passive income with our secure platform.",
+    title: "TerraVolt - Agricultural & Energy Investment Platform",
+    description: "Invest in sustainable agriculture, farmland, livestock, lithium energy, and commodity trading. High-yield investment opportunities with transparent returns.",
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_APP_URL || "https://www.terravolt.com"}/logo.png`,
+        url: `${process.env.NEXT_PUBLIC_APP_URL || "https://www.terravolt.com"}/social-preview.webp`,
         width: 1200,
         height: 630,
-        alt: "Terravolt - Crypto Investment Platform",
+        alt: "TerraVolt - Agricultural & Energy Investment Platform",
         type: "image/png",
       },
       {
@@ -66,9 +66,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@terravolt",
     creator: "@terravolt",
-    title: "Terravolt - Crypto Investment Platform",
-    description: "Explore the world of crypto with ease and security. Invest in cryptocurrencies, copy trading, and earn passive income.",
-    images: [`${process.env.NEXT_PUBLIC_APP_URL || "https://www.terravolt.com"}/logo.png`],
+    title: "TerraVolt - Agricultural & Energy Investment Platform",
+    description: "Invest in sustainable agriculture, farmland, livestock, lithium energy, and commodity trading. High-yield investment opportunities with transparent returns.",
+    images: [`${process.env.NEXT_PUBLIC_APP_URL || "https://www.terravolt.com"}/social-preview.webp`],
   },
   alternates: {
     canonical: "/",

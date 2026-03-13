@@ -45,7 +45,7 @@ export default function SecurityPage() {
                 Military-Grade Encryption Protecting Your Wealth
               </h2>
               <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                Every transaction, every login, every piece of data you share with Terravolt is protected by AES-256 encryption—the same standard used by the NSA, CIA, and major financial institutions worldwide to safeguard classified information.
+                Every transaction, every login, every piece of data you share with Terravolt is protected by AES-256 encryption - the same standard used by the NSA, CIA, and major financial institutions worldwide to safeguard classified information.
               </p>
               <p className="text-lg text-slate-600 leading-relaxed mb-6">
                 Your private keys never leave our secure infrastructure. All sensitive data is encrypted both in transit and at rest, with multiple layers of protection ensuring that even in the unlikely event of a breach, your information remains unreadable and useless to attackers.

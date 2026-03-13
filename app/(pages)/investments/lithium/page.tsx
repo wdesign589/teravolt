@@ -29,7 +29,7 @@ export default function LithiumInvestmentPage() {
               <span className="font-medium">energy investment</span>
             </h1>
             <p className="text-lg text-white/80 mb-8 max-w-2xl">
-              Invest in the future of renewable energy. Access opportunities in lithium-ion production, processing, and transportation—the backbone of EVs and clean energy storage.
+              Invest in the future of renewable energy. Access opportunities in lithium-ion production, processing, and transportation - the backbone of EVs and clean energy storage.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link

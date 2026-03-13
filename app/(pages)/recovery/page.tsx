@@ -83,7 +83,7 @@ export default function RecoveryPage() {
 
           <div className="mt-12 bg-amber-50 border border-amber-200 rounded-xl p-6 text-center">
             <p className="text-amber-800">
-              <strong>If you recognize any of these signs, you may be a victim of investment fraud.</strong> Don't wait—early action increases recovery chances.
+              <strong>If you recognize any of these signs, you may be a victim of investment fraud.</strong> Don't wait - early action increases recovery chances.
             </p>
           </div>
         </div>

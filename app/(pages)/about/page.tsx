@@ -45,7 +45,7 @@ export default function AboutPage() {
                 Building Trust Through Innovation
               </h2>
               <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                Founded in 2020 by a team of fintech veterans and agricultural investment specialists, TerraVolt Incorporated emerged from a simple belief: asset-backed investing should be accessible, secure, and profitable for everyone—not just institutional investors and industry experts.
+                Founded in 2020 by a team of fintech veterans and agricultural investment specialists, TerraVolt Incorporated emerged from a simple belief: asset-backed investing should be accessible, secure, and profitable for everyone - not just institutional investors and industry experts.
               </p>
               <p className="text-lg text-slate-600 leading-relaxed mb-6">
                 We've spent four years building the infrastructure, partnerships, and user experience that today serves over 100,000 investors managing more than $2 billion in agricultural and energy assets. Our platform connects investors with verified opportunities across farming, renewable energy, and commodities.
@@ -105,7 +105,7 @@ export default function AboutPage() {
               Our Mission & Vision
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              We're not just building a platform—we're shaping the future of finance
+              We're not just building a platform - we're shaping the future of finance
             </p>
           </div>
 
@@ -137,7 +137,7 @@ export default function AboutPage() {
                 A world where agricultural and energy investments are as accessible and trusted as traditional banking, empowering everyone to participate in sustainable wealth building.
               </p>
               <p className="text-slate-600 leading-relaxed">
-                We envision a future where investing in farmland, livestock, and renewable energy is mainstream—where anyone can invest as easily as a Wall Street trader, where transparency and security are standard, and where financial inclusion is a reality, not an aspiration.
+                We envision a future where investing in farmland, livestock, and renewable energy is mainstream - where anyone can invest as easily as a Wall Street trader, where transparency and security are standard, and where financial inclusion is a reality, not an aspiration.
               </p>
             </div>
           </div>

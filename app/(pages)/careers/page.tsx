@@ -45,7 +45,7 @@ export default function CareersPage() {
                 Work That Matters
               </h2>
               <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                At TerraVolt Incorporated, you'll work on products that impact millions of lives. We're not just building another fintech app—we're democratizing access to sustainable wealth through agricultural and energy investments.
+                At TerraVolt Incorporated, you'll work on products that impact millions of lives. We're not just building another fintech app - we're democratizing access to sustainable wealth through agricultural and energy investments.
               </p>
               <p className="text-lg text-slate-600 leading-relaxed mb-6">
                 Our team of 200+ professionals across 30 countries is united by a shared mission: making asset-backed investment accessible, secure, and profitable for everyone. From engineers and designers to marketers and customer success specialists, every role contributes to this vision.

@@ -88,7 +88,7 @@ function CheckEmailContent() {
             </p>
             <ol className="text-slate-400 text-sm space-y-2 list-decimal list-inside">
               <li>Open your email inbox</li>
-              <li>Look for our verification email from <span className="text-emerald-400 font-medium">support@lunexcorpunion.com</span></li>
+              <li>Look for our verification email from <span className="text-emerald-400 font-medium">support@terravolt.com</span></li>
               <li>Click the "Verify Email Address" button</li>
               <li>You'll be redirected back to complete your setup</li>
             </ol>

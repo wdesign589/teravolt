@@ -20,7 +20,7 @@ export default function DashboardOverviewPage() {
   const isLoading = useIsLoading();
   
   const [selectedPeriod, setSelectedPeriod] = useState('1W');
-  const [selectedSymbol, setSelectedSymbol] = useState('CBOT:ZC1!');
+  const [selectedSymbol, setSelectedSymbol] = useState('AMEX:DBA');
   
   // Extract user statistics with fallbacks to 0
   const balance = user?.balance ?? 0;
@@ -334,21 +334,24 @@ export default function DashboardOverviewPage() {
                 onChange={(e) => setSelectedSymbol(e.target.value)}
                 className="w-full md:w-auto px-4 py-2 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               >
-                <optgroup label="🌾 Agricultural Commodities">
-                  <option value="CBOT:ZC1!">Corn Futures</option>
-                  <option value="CBOT:ZW1!">Wheat Futures</option>
-                  <option value="CBOT:ZS1!">Soybean Futures</option>
-                  <option value="CME:LE1!">Live Cattle Futures</option>
-                  <option value="CME:GF1!">Feeder Cattle Futures</option>
-                  <option value="CME:HE1!">Lean Hogs Futures</option>
-                  <option value="NYMEX:CL1!">Crude Oil Futures</option>
-                  <option value="COMEX:GC1!">Gold Futures</option>
+                <optgroup label="🌾 Agricultural ETFs & Commodities">
+                  <option value="AMEX:DBA">Agriculture ETF (DBA)</option>
+                  <option value="AMEX:CORN">Corn ETF (CORN)</option>
+                  <option value="AMEX:WEAT">Wheat ETF (WEAT)</option>
+                  <option value="AMEX:SOYB">Soybean ETF (SOYB)</option>
+                  <option value="AMEX:COW">Livestock ETF (COW)</option>
                 </optgroup>
-                <optgroup label="🔋 Energy & Lithium">
+                <optgroup label="💰 Precious Metals & Energy">
+                  <option value="AMEX:GLD">Gold ETF (GLD)</option>
+                  <option value="AMEX:SLV">Silver ETF (SLV)</option>
+                  <option value="AMEX:USO">Crude Oil ETF (USO)</option>
+                  <option value="AMEX:UNG">Natural Gas ETF (UNG)</option>
+                </optgroup>
+                <optgroup label="🔋 Lithium & Energy Stocks">
                   <option value="NYSE:ALB">Albemarle Corp (Lithium)</option>
                   <option value="NYSE:SQM">Sociedad Química (Lithium)</option>
                   <option value="NYSE:LAC">Lithium Americas</option>
-                  <option value="NASDAQ:LTHM">Livent Corporation</option>
+                  <option value="NASDAQ:TSLA">Tesla Inc (EV)</option>
                 </optgroup>
                 <optgroup label="🌱 Agricultural Stocks">
                   <option value="NYSE:DE">Deere & Company (Farm Equipment)</option>

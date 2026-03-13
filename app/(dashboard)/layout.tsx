@@ -32,12 +32,29 @@ export default function DashboardLayout({
   const [currentDate, setCurrentDate] = useState('');
   
   // Handle logout
-  const handleLogout = () => {
+  const handleLogout = async () => {
     console.log('🔒 Logging out...');
-    resetDashboardInit(); // Reset init flag so dashboard re-initializes on next login
-    logout(); // Clear store state and localStorage
-    // Use window.location.href to ensure proper redirect after state is cleared
-    window.location.href = '/sign-in';
+    
+    // Clear auth cookie with all possible paths and domains
+    document.cookie = 'auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'auth-token=; path=/; domain=' + window.location.hostname + '; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'auth-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    
+    // Reset dashboard init flag
+    resetDashboardInit();
+    
+    // Clear store state and localStorage
+    logout();
+    
+    // Clear any other auth-related localStorage items
+    localStorage.removeItem('dashboard-storage');
+    localStorage.removeItem('auth-token');
+    
+    // Small delay to ensure state is fully cleared before redirect
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Force hard redirect to sign-in page
+    window.location.replace('/sign-in');
   };
 
   // Force desktop viewport on mobile

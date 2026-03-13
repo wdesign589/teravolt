@@ -28,7 +28,7 @@ export default function ContactPage() {
               <span className="font-medium">help you succeed</span>
             </h1>
             <p className="text-lg text-white/70 max-w-2xl">
-              Get in touch with our team—we're available 24/7 to answer your questions.
+              Get in touch with our team - we're available 24/7 to answer your questions.
             </p>
           </div>
         </div>
@@ -42,7 +42,7 @@ export default function ContactPage() {
               Choose How You'd Like to Connect
             </h2>
             <p className="text-lg text-slate-600">
-              Multiple ways to reach us—whichever works best for you
+              Multiple ways to reach us - whichever works best for you
             </p>
           </div>
 

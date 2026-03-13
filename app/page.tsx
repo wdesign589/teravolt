@@ -225,11 +225,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Investment Opportunities - Premium Cards with Images */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-stone-50">
+      {/* Investment Opportunities - Grouped by Category */}
+      <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-stone-50">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-16">
+          <div className="text-center mb-20">
             <p className="text-emerald-600 font-medium tracking-wide uppercase text-sm mb-4">Investment Opportunities</p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
               Diversify across<br />
@@ -240,215 +240,257 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Investment Cards - 6 Categories */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {/* Farmland Investment */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="relative h-52 overflow-hidden">
-                <Image
-                  src="/DJI_20240107162404_0073_D-Edit-1.webp"
-                  alt="Farmland"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4">
-                  <span className="px-3 py-1 bg-emerald-500 text-white text-xs font-medium rounded">Agricultural</span>
-                </div>
+          {/* ═══════════════════════════════════════════════════════════════ */}
+          {/* HARD COMMODITIES - Agricultural */}
+          {/* ═══════════════════════════════════════════════════════════════ */}
+          <div className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-medium text-slate-900 mb-2">Farmland Investment</h3>
-                <p className="text-slate-600 text-sm mb-4 leading-relaxed">
-                  Own productive agricultural land with long-term appreciation and lease income potential.
-                </p>
-                <div className="flex items-center justify-between py-3 border-t border-slate-100">
-                  <div>
-                    <div className="text-xs text-slate-500">Target Returns</div>
-                    <div className="text-lg font-medium text-emerald-600">76 - 90% p.a.</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs text-slate-500">Min. Investment</div>
-                    <div className="text-lg font-medium text-slate-900">$10,000</div>
-                  </div>
-                </div>
-                <Link href="/investments/farmland" className="mt-4 block w-full py-3 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors">
-                  View Opportunities
-                </Link>
+              <div>
+                <h3 className="text-2xl font-semibold text-slate-900">Hard Commodities</h3>
+                <p className="text-slate-500">Agricultural Investments</p>
               </div>
             </div>
-
-            {/* Crop Production */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="relative h-52 overflow-hidden">
-                <Image
-                  src="/8fd16e70-9a71-4afe-bbec-8f2cabfe11a0.webp"
-                  alt="Crop Production"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4">
-                  <span className="px-3 py-1 bg-emerald-500 text-white text-xs font-medium rounded">Agricultural</span>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Farmland */}
+              <div className="group bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-emerald-200 hover:shadow-lg transition-all duration-300">
+                <div className="relative h-44 overflow-hidden">
+                  <Image src="/DJI_20240107162404_0073_D-Edit-1.webp" alt="Farmland" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                </div>
+                <div className="p-5">
+                  <h4 className="text-lg font-semibold text-slate-900 mb-1">Farmland Investment</h4>
+                  <p className="text-slate-500 text-sm mb-4">Own productive land with appreciation & lease income</p>
+                  <div className="flex items-center justify-between text-sm mb-4">
+                    <span className="text-emerald-600 font-medium">76-90% returns</span>
+                    <span className="text-slate-400">From $10,000</span>
+                  </div>
+                  <Link href="/investments/farmland" className="block w-full py-2.5 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors text-sm">
+                    View Plans
+                  </Link>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-medium text-slate-900 mb-2">Crop Production</h3>
-                <p className="text-slate-600 text-sm mb-4 leading-relaxed">
-                  Invest in commercial farming operations with returns aligned to harvest cycles.
-                </p>
-                <div className="flex items-center justify-between py-3 border-t border-slate-100">
-                  <div>
-                    <div className="text-xs text-slate-500">Target Returns</div>
-                    <div className="text-lg font-medium text-emerald-600">76 - 95% p.a.</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs text-slate-500">Min. Investment</div>
-                    <div className="text-lg font-medium text-slate-900">$5,000</div>
-                  </div>
+
+              {/* Crop Production */}
+              <div className="group bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-emerald-200 hover:shadow-lg transition-all duration-300">
+                <div className="relative h-44 overflow-hidden">
+                  <Image src="/8fd16e70-9a71-4afe-bbec-8f2cabfe11a0.webp" alt="Crop Production" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 </div>
-                <Link href="/investments/crops" className="mt-4 block w-full py-3 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors">
-                  View Opportunities
-                </Link>
+                <div className="p-5">
+                  <h4 className="text-lg font-semibold text-slate-900 mb-1">Crop Production</h4>
+                  <p className="text-slate-500 text-sm mb-4">Commercial farming aligned to harvest cycles</p>
+                  <div className="flex items-center justify-between text-sm mb-4">
+                    <span className="text-emerald-600 font-medium">76-95% returns</span>
+                    <span className="text-slate-400">From $5,000</span>
+                  </div>
+                  <Link href="/investments/crops" className="block w-full py-2.5 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors text-sm">
+                    View Plans
+                  </Link>
+                </div>
+              </div>
+
+              {/* Livestock */}
+              <div className="group bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-emerald-200 hover:shadow-lg transition-all duration-300">
+                <div className="relative h-44 overflow-hidden">
+                  <Image src="/15ba644e-81cd-4531-b325-417a414dfef8.webp" alt="Livestock" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                </div>
+                <div className="p-5">
+                  <h4 className="text-lg font-semibold text-slate-900 mb-1">Livestock Farming</h4>
+                  <p className="text-slate-500 text-sm mb-4">Own cattle managed by vetted partner farmers</p>
+                  <div className="flex items-center justify-between text-sm mb-4">
+                    <span className="text-emerald-600 font-medium">76-90% returns</span>
+                    <span className="text-slate-400">From $5,000</span>
+                  </div>
+                  <Link href="/investments/livestock" className="block w-full py-2.5 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors text-sm">
+                    View Plans
+                  </Link>
+                </div>
               </div>
             </div>
+          </div>
 
-            {/* Livestock Farming */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="relative h-52 overflow-hidden">
-                <Image
-                  src="/15ba644e-81cd-4531-b325-417a414dfef8.webp"
-                  alt="Livestock"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4">
-                  <span className="px-3 py-1 bg-emerald-500 text-white text-xs font-medium rounded">Agricultural</span>
-                </div>
+          {/* ═══════════════════════════════════════════════════════════════ */}
+          {/* HARD COMMODITIES - Precious/Strategic Metals */}
+          {/* ═══════════════════════════════════════════════════════════════ */}
+          <div className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-medium text-slate-900 mb-2">Livestock Farming</h3>
-                <p className="text-slate-600 text-sm mb-4 leading-relaxed">
-                  Own cattle and livestock managed by vetted partner farmers with transparent returns.
-                </p>
-                <div className="flex items-center justify-between py-3 border-t border-slate-100">
-                  <div>
-                    <div className="text-xs text-slate-500">Target Returns</div>
-                    <div className="text-lg font-medium text-emerald-600">76 - 90% p.a.</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs text-slate-500">Min. Investment</div>
-                    <div className="text-lg font-medium text-slate-900">$5,000</div>
-                  </div>
-                </div>
-                <Link href="/investments/livestock" className="mt-4 block w-full py-3 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors">
-                  View Opportunities
-                </Link>
+              <div>
+                <h3 className="text-2xl font-semibold text-slate-900">Precious & Strategic Metals</h3>
+                <p className="text-slate-500">Renewable Energy Sector</p>
               </div>
             </div>
-
-            {/* Lithium-Ion Energy */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="relative h-52 overflow-hidden">
-                <Image
-                  src="/1e0648bd-b076-4900-9819-fb7100ec376b.webp"
-                  alt="Lithium Energy"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4">
-                  <span className="px-3 py-1 bg-orange-500 text-white text-xs font-medium rounded">Energy</span>
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-medium text-slate-900 mb-2">Lithium-Ion Energy</h3>
-                <p className="text-slate-600 text-sm mb-4 leading-relaxed">
-                  Participate in the renewable energy revolution through lithium production and logistics.
-                </p>
-                <div className="flex items-center justify-between py-3 border-t border-slate-100">
-                  <div>
-                    <div className="text-xs text-slate-500">Target Returns</div>
-                    <div className="text-lg font-medium text-orange-600">76 - 150% p.a.</div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Lithium-Ion Energy - Featured */}
+              <div className="group bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl overflow-hidden border border-orange-100 hover:shadow-lg transition-all duration-300 lg:col-span-2">
+                <div className="grid grid-cols-1 md:grid-cols-2">
+                  <div className="relative h-64 md:h-auto overflow-hidden">
+                    <Image src="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=800&q=80" alt="Electric Vehicle Battery" fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
                   </div>
-                  <div className="text-right">
-                    <div className="text-xs text-slate-500">Min. Investment</div>
-                    <div className="text-lg font-medium text-slate-900">$50,000</div>
-                  </div>
-                </div>
-                <Link href="/investments/lithium" className="mt-4 block w-full py-3 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors">
-                  View Opportunities
-                </Link>
-              </div>
-            </div>
-
-            {/* CFDs & Trading */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="relative h-52 overflow-hidden">
-                <Image
-                  src="/7cc5ccf2-8255-4b23-8d42-dcd493b99b10.webp"
-                  alt="Trading Platform"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4">
-                  <span className="px-3 py-1 bg-blue-500 text-white text-xs font-medium rounded">Trading</span>
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-medium text-slate-900 mb-2">CFDs & Commodities</h3>
-                <p className="text-slate-600 text-sm mb-4 leading-relaxed">
-                  Access global markets through regulated platforms. Trade gold, oil, forex, and more.
-                </p>
-                <div className="flex items-center justify-between py-3 border-t border-slate-100">
-                  <div>
-                    <div className="text-xs text-slate-500">Leverage</div>
-                    <div className="text-lg font-medium text-blue-600">Up to 200:1</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs text-slate-500">Min. Investment</div>
-                    <div className="text-lg font-medium text-slate-900">$5,000</div>
+                  <div className="p-8 flex flex-col justify-center">
+                    <span className="inline-block px-3 py-1 bg-orange-500 text-white text-xs font-medium rounded w-fit mb-4">Energy</span>
+                    <h4 className="text-2xl font-semibold text-slate-900 mb-3">Lithium-Ion Energy</h4>
+                    <p className="text-slate-600 mb-6">Participate in the renewable energy revolution through lithium mining, production, and logistics operations powering EVs and clean energy storage worldwide.</p>
+                    <div className="flex flex-wrap gap-6 mb-6">
+                      <div>
+                        <div className="text-xs text-slate-500 mb-1">Target Returns</div>
+                        <div className="text-xl font-semibold text-orange-600">76-150% p.a.</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-slate-500 mb-1">Min. Investment</div>
+                        <div className="text-xl font-semibold text-slate-900">$50,000</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-slate-500 mb-1">Duration</div>
+                        <div className="text-xl font-semibold text-slate-900">6-72 months</div>
+                      </div>
+                    </div>
+                    <Link href="/investments/lithium" className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors w-fit">
+                      Explore Lithium Plans
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </Link>
                   </div>
                 </div>
-                <Link href="/trading" className="mt-4 block w-full py-3 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors">
-                  Start Trading
-                </Link>
               </div>
             </div>
+          </div>
 
-            {/* Agricultural Grants */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="relative h-52 overflow-hidden">
-                <Image
-                  src="/94a9bc3e-f7bb-450e-8d0a-9a021e4e0add.webp"
-                  alt="Agricultural Grants"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4">
-                  <span className="px-3 py-1 bg-green-600 text-white text-xs font-medium rounded">Funding</span>
+          {/* ═══════════════════════════════════════════════════════════════ */}
+          {/* SOFT COMMODITIES - Trading */}
+          {/* ═══════════════════════════════════════════════════════════════ */}
+          <div className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-2xl font-semibold text-slate-900">Soft Commodities</h3>
+                <p className="text-slate-500">CFDs & Trading</p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Precious Metals Trading */}
+              <div className="group bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300">
+                <div className="relative h-44 overflow-hidden">
+                  <Image src="https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80" alt="Gold Bars" fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                </div>
+                <div className="p-5">
+                  <h4 className="text-lg font-semibold text-slate-900 mb-1">Precious Metals</h4>
+                  <p className="text-slate-500 text-sm mb-4">Trade gold, silver, and other precious metals</p>
+                  <div className="flex items-center justify-between text-sm mb-4">
+                    <span className="text-blue-600 font-medium">Competitive spreads</span>
+                    <span className="text-slate-400">From $5,000</span>
+                  </div>
+                  <Link href="/trading" className="block w-full py-2.5 text-center text-blue-600 font-medium border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors text-sm">
+                    Start Trading
+                  </Link>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-medium text-slate-900 mb-2">Agricultural Grants</h3>
-                <p className="text-slate-600 text-sm mb-4 leading-relaxed">
-                  Access funding opportunities for agricultural projects through government and private programs.
-                </p>
-                <div className="flex items-center justify-between py-3 border-t border-slate-100">
-                  <div>
-                    <div className="text-xs text-slate-500">Grant Type</div>
-                    <div className="text-lg font-medium text-green-600">Gov & Private</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs text-slate-500">Funding Range</div>
-                    <div className="text-lg font-medium text-slate-900">$50K - $5M</div>
-                  </div>
+
+              {/* Energy Commodities */}
+              <div className="group bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300">
+                <div className="relative h-44 overflow-hidden">
+                  <Image src="https://images.unsplash.com/photo-1513828583688-c52646db42da?w=800&q=80" alt="Oil Refinery" fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 </div>
-                <Link href="/grants" className="mt-4 block w-full py-3 text-center text-emerald-600 font-medium border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors">
-                  Explore Grants
-                </Link>
+                <div className="p-5">
+                  <h4 className="text-lg font-semibold text-slate-900 mb-1">Energy Commodities</h4>
+                  <p className="text-slate-500 text-sm mb-4">Access crude oil, natural gas, and energy markets</p>
+                  <div className="flex items-center justify-between text-sm mb-4">
+                    <span className="text-blue-600 font-medium">Global markets</span>
+                    <span className="text-slate-400">From $5,000</span>
+                  </div>
+                  <Link href="/trading" className="block w-full py-2.5 text-center text-blue-600 font-medium border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors text-sm">
+                    Start Trading
+                  </Link>
+                </div>
+              </div>
+
+              {/* CFDs */}
+              <div className="group bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300">
+                <div className="relative h-44 overflow-hidden">
+                  <Image src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80" alt="Trading Charts" fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                </div>
+                <div className="p-5">
+                  <h4 className="text-lg font-semibold text-slate-900 mb-1">CFD Trading</h4>
+                  <p className="text-slate-500 text-sm mb-4">Trade contracts for difference with leverage</p>
+                  <div className="flex items-center justify-between text-sm mb-4">
+                    <span className="text-blue-600 font-medium">Up to 200:1 leverage</span>
+                    <span className="text-slate-400">From $5,000</span>
+                  </div>
+                  <Link href="/trading" className="block w-full py-2.5 text-center text-blue-600 font-medium border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors text-sm">
+                    Start Trading
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ═══════════════════════════════════════════════════════════════ */}
+          {/* AGRICULTURAL GRANTS */}
+          {/* ═══════════════════════════════════════════════════════════════ */}
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-2xl font-semibold text-slate-900">Agricultural Grants</h3>
+                <p className="text-slate-500">Government & Private Funding</p>
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border border-green-100 overflow-hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                <div className="relative h-64 md:h-auto overflow-hidden">
+                  <Image src="https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=80" alt="Agricultural Grants" fill className="object-cover" unoptimized />
+                </div>
+                <div className="p-8 flex flex-col justify-center">
+                  <span className="inline-block px-3 py-1 bg-green-600 text-white text-xs font-medium rounded w-fit mb-4">Grant + Co-Funding</span>
+                  <h4 className="text-2xl font-semibold text-slate-900 mb-3">Access Agricultural Funding</h4>
+                  <p className="text-slate-600 mb-6">Access funding opportunities for agricultural projects through government programs, private grants, and co-investment structures that reduce project costs and increase investor IRR.</p>
+                  <div className="flex flex-wrap gap-6 mb-6">
+                    <div>
+                      <div className="text-xs text-slate-500 mb-1">Grant Type</div>
+                      <div className="text-xl font-semibold text-green-600">Gov & Private</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-slate-500 mb-1">Funding Range</div>
+                      <div className="text-xl font-semibold text-slate-900">$1K - $50K</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-slate-500 mb-1">Duration</div>
+                      <div className="text-xl font-semibold text-slate-900">6-18 months</div>
+                    </div>
+                  </div>
+                  <Link href="/grants" className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors w-fit">
+                    Explore Grants
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -566,78 +608,77 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Investment Recovery Services - New Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-900">
+      {/* Investment Recovery Services - Calm & Aesthetic */}
+      <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-stone-50 to-white">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left - Content */}
-            <div>
-              <p className="text-emerald-400 font-medium tracking-wide uppercase text-sm mb-4">Investment Recovery</p>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
-                Lost access to<br />
-                <span className="font-medium">your investments?</span>
-              </h2>
-              <p className="text-lg text-slate-400 leading-relaxed mb-8">
-                Our specialized recovery division helps individuals reclaim lost, forgotten, or inaccessible financial assets. Through forensic analysis and legal coordination, we've helped thousands recover what's rightfully theirs.
-              </p>
-              
-              {/* Services List */}
-              <div className="space-y-4 mb-10">
-                <div className="flex items-start gap-4">
-                  <div className="w-1 h-1 bg-emerald-400 rounded-full mt-3 flex-shrink-0" />
-                  <div>
-                    <div className="text-white font-medium">Dormant Investment Recovery</div>
-                    <div className="text-slate-500 text-sm">Locate and recover forgotten shares, stocks, and portfolios</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-1 h-1 bg-emerald-400 rounded-full mt-3 flex-shrink-0" />
-                  <div>
-                    <div className="text-white font-medium">Fraud Recovery Assistance</div>
-                    <div className="text-slate-500 text-sm">Professional support for victims of investment scams</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-1 h-1 bg-emerald-400 rounded-full mt-3 flex-shrink-0" />
-                  <div>
-                    <div className="text-white font-medium">Asset Tracing & Verification</div>
-                    <div className="text-slate-500 text-sm">Comprehensive forensic analysis and documentation</div>
-                  </div>
-                </div>
+          <div className="text-center mb-16">
+            <p className="text-emerald-600 font-medium tracking-wide uppercase text-sm mb-4">Investment Recovery</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
+              Recover what's<br />
+              <span className="font-medium">rightfully yours</span>
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Our specialized recovery division helps individuals reclaim lost, forgotten, or inaccessible financial assets through professional forensic analysis and legal coordination.
+            </p>
+          </div>
+
+          {/* Stats Row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+            {[
+              { value: '5,000+', label: 'Clients Assisted' },
+              { value: '$25M+', label: 'Assets Recovered' },
+              { value: '8', label: 'Countries Served' },
+              { value: '92%', label: 'Success Rate' },
+            ].map((stat, i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm">
+                <div className="text-3xl font-light text-slate-900 mb-1">{stat.value}</div>
+                <div className="text-slate-500 text-sm">{stat.label}</div>
               </div>
-              
-              <Link 
-                href="/recovery" 
-                className="inline-flex items-center gap-3 px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 font-medium rounded transition-all"
-              >
-                File a Recovery Claim
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            ))}
+          </div>
+
+          {/* Services Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-5">
+                <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-              </Link>
-            </div>
-            
-            {/* Right - Stats */}
-            <div className="bg-slate-800/50 rounded-2xl p-10 border border-slate-700">
-              <div className="grid grid-cols-2 gap-8">
-                <div className="text-center p-6">
-                  <div className="text-4xl font-light text-white mb-2">5,000+</div>
-                  <div className="text-slate-400 text-sm">Clients Assisted</div>
-                </div>
-                <div className="text-center p-6">
-                  <div className="text-4xl font-light text-white mb-2">$25M+</div>
-                  <div className="text-slate-400 text-sm">Assets Recovered</div>
-                </div>
-                <div className="text-center p-6">
-                  <div className="text-4xl font-light text-white mb-2">8</div>
-                  <div className="text-slate-400 text-sm">Countries Served</div>
-                </div>
-                <div className="text-center p-6">
-                  <div className="text-4xl font-light text-white mb-2">92%</div>
-                  <div className="text-slate-400 text-sm">Success Rate</div>
-                </div>
               </div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Dormant Recovery</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">Locate and recover forgotten shares, stocks, and portfolios that have become inaccessible.</p>
             </div>
+            <div className="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-5">
+                <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Fraud Assistance</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">Professional support for victims of investment scams with structured recovery pathways.</p>
+            </div>
+            <div className="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-5">
+                <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Asset Verification</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">Comprehensive forensic analysis and documentation to trace and verify assets.</p>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center">
+            <Link 
+              href="/recovery" 
+              className="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-lg transition-all"
+            >
+              File a Recovery Claim
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
