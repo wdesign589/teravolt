@@ -35,10 +35,19 @@ export default function DashboardLayout({
   const handleLogout = async () => {
     console.log('🔒 Logging out...');
     
-    // Clear auth cookie with all possible paths and domains
-    document.cookie = 'auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie = 'auth-token=; path=/; domain=' + window.location.hostname + '; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie = 'auth-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    try {
+      // Call server-side logout API to clear httpOnly cookie
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+      
+      if (!response.ok) {
+        console.error('Logout API failed:', response.status);
+      }
+    } catch (error) {
+      console.error('Logout API error:', error);
+    }
     
     // Reset dashboard init flag
     resetDashboardInit();
@@ -50,8 +59,8 @@ export default function DashboardLayout({
     localStorage.removeItem('dashboard-storage');
     localStorage.removeItem('auth-token');
     
-    // Small delay to ensure state is fully cleared before redirect
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // Small delay to ensure cookie is cleared before redirect
+    await new Promise(resolve => setTimeout(resolve, 200));
     
     // Force hard redirect to sign-in page
     window.location.replace('/sign-in');

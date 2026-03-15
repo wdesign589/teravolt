@@ -25,7 +25,7 @@ async function createAdmin() {
     }
     
     // Hash password
-    const hashedPassword = await bcrypt.hash('Brainbox77', 10);
+    const hashedPassword = await bcrypt.hash('adminterra2626', 10);
     
     // Create admin user
     const adminUser = {
@@ -50,7 +50,7 @@ async function createAdmin() {
     const result = await usersCollection.insertOne(adminUser);
     console.log('Admin user created successfully!');
     console.log('Email: admin@terravolt.com');
-    console.log('Password: Brainbox77');
+    console.log('Password: adminterra2626');
     console.log('User ID:', result.insertedId);
     
   } catch (error) {
