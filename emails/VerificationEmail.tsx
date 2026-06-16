@@ -68,8 +68,8 @@ export const VerificationEmail = ({
         
         <Text style={footer}>
           Need help? Contact our support team at{' '}
-          <Link href="mailto:support@lunex.com" style={link}>
-            support@lunex.com
+          <Link href="mailto:support@terravoltinc.com" style={link}>
+            support@terravoltinc.com
           </Link>
         </Text>
         

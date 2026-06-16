@@ -4,7 +4,13 @@ import { createUserDocument, validateUserData, UserDocument } from '@/lib/models
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import { getAppUrl } from '@/lib/email/constants';
+import { sendResendEmail } from '@/lib/email/resend';
 import { sendEmail } from '@/lib/email/smtp';
+import {
+  WELCOME_EMAIL_SUBJECT,
+  createWelcomeEmail,
+} from '@/lib/email/welcome';
 import { VerificationEmail } from '@/emails/VerificationEmail';
 
 export async function POST(request: NextRequest) {
@@ -78,21 +84,36 @@ export async function POST(request: NextRequest) {
       );
     }
     
+    const userEmail = body.email.toLowerCase().trim();
+    const firstName = body.firstName.trim();
+    const appUrl = getAppUrl();
+
     // Send verification email via SMTP
     try {
-      const verificationLink = `${process.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${verificationToken}`;
-      
+      const verificationLink = `${appUrl}/verify-email?token=${verificationToken}`;
+
       await sendEmail({
-        to: body.email.toLowerCase().trim(),
-        subject: 'Verify your Lunex account',
+        to: userEmail,
+        subject: 'Verify your Terravolt account',
         react: VerificationEmail({
-          firstName: body.firstName,
+          firstName,
           verificationLink,
         }),
       });
     } catch (emailError) {
       console.error('Failed to send verification email:', emailError);
-      // Don't fail the signup if email fails
+    }
+
+    // Send welcome email via Resend (uses the user's first name)
+    try {
+      await sendResendEmail({
+        to: userEmail,
+        subject: WELCOME_EMAIL_SUBJECT,
+        react: createWelcomeEmail(firstName),
+      });
+      console.log(`Welcome email sent to ${userEmail} for ${firstName}`);
+    } catch (emailError) {
+      console.error('Failed to send welcome email:', emailError);
     }
     
     // Return success without auto-login - user must verify email first

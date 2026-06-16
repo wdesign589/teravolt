@@ -13,7 +13,8 @@
     "distribute-profits": "tsx --env-file=.env.local scripts/distribute-profits.ts",
     "seed-copy-traders": "tsx --env-file=.env.local scripts/seed-copy-traders.ts",
     "clear-copy-traders": "tsx --env-file=.env.local scripts/clear-copy-traders.ts",
-    "distribute-copy-profits": "tsx --env-file=.env.local scripts/distribute-copy-trading-profits.ts"
+    "distribute-copy-profits": "tsx --env-file=.env.local scripts/distribute-copy-trading-profits.ts",
+    "send-welcome-email": "tsx --env-file=.env.local scripts/send-welcome-email.ts"
   },
   "dependencies": {
     "@react-email/components": "^1.0.1",
@@ -29,6 +30,7 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-hook-form": "^7.54.2",
+    "resend": "^6.12.4",
     "tailwind-merge": "^2.6.0",
     "zod": "^3.24.1",
     "zustand": "^5.0.2"
