@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/distribute-profits",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/distribute-copy-profits",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}
